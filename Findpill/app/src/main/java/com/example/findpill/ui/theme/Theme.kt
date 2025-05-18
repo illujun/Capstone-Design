@@ -20,9 +20,11 @@ private val DarkColorScheme = darkColorScheme(
     secondary = darkbannerColor,
     background = darkbackgroundColor,
     surface = darksecondBackgroundColor,
-    onPrimary = bannerBoxColor,
-    onSecondary = bannerBoxBottomColor,
-    tertiary = highlightboxColor
+    onPrimary = darkbannerboxColor,
+    onSecondary = darkbannerBoxBottomColor,
+    onSurface = darktextColor,
+    tertiary = highlightboxColor,
+    onTertiary = darkbuttontextColor
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -30,9 +32,12 @@ private val LightColorScheme = lightColorScheme(
     secondary = bannerColor,
     background = backgroundColor,
     surface = secondBackgroundColor,
+    onSurface = textColor,
     onPrimary = bannerBoxColor,
     onSecondary = bannerBoxBottomColor,
-    tertiary = highlightboxColor
+    tertiary = highlightboxColor,
+    onTertiary = buttontextColor
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -49,7 +54,7 @@ private val LightColorScheme = lightColorScheme(
 fun FindPillTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

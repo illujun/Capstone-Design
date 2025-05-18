@@ -68,5 +68,19 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.navigation:navigation-compose:2.7.7") // 화면 전환 implementation
+    implementation ("androidx.compose.material:material:1.5.0") // material 3 말고 일반 material
+
+    implementation("androidx.camera:camera-core:1.3.0") // 카메라 전용
+    implementation("androidx.camera:camera-camera2:1.3.0")
+    implementation("androidx.camera:camera-lifecycle:1.3.0")
+
+    implementation("androidx.camera:camera-view:1.3.0")
+
+    implementation("androidx.compose.ui:ui-viewbinding:1.6.1")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0") // 데이터 저장 관련
+
 }
