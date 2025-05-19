@@ -118,7 +118,7 @@ fun Album(navController: NavController){
                             set("temp_pill1", selected.value[0].toString())
                             set("temp_pill2", selected.value[1].toString())
                         }
-                        navController.navigate("confirm2")
+                        navController.navigate("confirm")
                     },
                     modifier = Modifier.fillMaxWidth(0.8f).padding(vertical= 24.dp)
                 ) {

@@ -1,5 +1,6 @@
 package com.example.findpill.ui.screen
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +38,7 @@ fun Confirm(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ){
              TopBar(
-                title = "알약 사진 촬영",
+                title = "알약 사진 검색",
                 onBackClick = {navController.navigate("photosearch")}
             )
             Text(
@@ -69,10 +70,17 @@ fun Confirm(navController: NavController) {
                         modifier = Modifier.padding(vertical = 12.dp)
                     )
                     pill1?.let{
+                        val painter = if(it.startsWith("content://")) {
+                            rememberAsyncImagePainter(Uri.parse(it))
+                        }else{
+                            rememberAsyncImagePainter(File(it))
+                        }
                         Image(
-                            painter = rememberAsyncImagePainter(model = File(it)),
+                            painter = painter,
                             contentDescription = null,
-                            modifier = Modifier.fillMaxWidth(0.95f).aspectRatio(1f)
+                            modifier = Modifier
+                                .fillMaxWidth(0.95f)
+                                .aspectRatio(1f)
                         )
                     }
                 }
@@ -90,10 +98,17 @@ fun Confirm(navController: NavController) {
                         modifier = Modifier.padding(vertical = 12.dp)
                     )
                     pill2?.let{
+                        val painter = if ( it.startsWith("content://")){
+                            rememberAsyncImagePainter(Uri.parse(it))
+                        }else{
+                            rememberAsyncImagePainter(File(it))
+                        }
                         Image(
-                            painter = rememberAsyncImagePainter(model = File(it)),
+                            painter = painter,
                             contentDescription = null,
-                            modifier = Modifier.fillMaxWidth(0.95f).aspectRatio(1f)
+                            modifier = Modifier
+                                .fillMaxWidth(0.95f)
+                                .aspectRatio(1f)
                         )
                     }
                 }
@@ -103,17 +118,30 @@ fun Confirm(navController: NavController) {
                 set("pill1", pill1)
                 set("pill2", pill2)
             }
-
-            Button(
-                onClick = { navController.navigate("photoing") },
-                modifier = Modifier.fillMaxWidth(0.8f).padding(vertical = 24.dp)
-            ) {
-                Text("\uD83D\uDCF7 다시 촬영하기", fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onTertiary)
+            if(pill1?.startsWith("content://") == true){
+                Button(
+                    onClick = { navController.navigate("album") },
+                    modifier = Modifier.fillMaxWidth(0.8f).padding(vertical = 24.dp)
+                ) {
+                    Text("\uD83D\uDDBC\uFE0F 다시 고르기", fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onTertiary)
+                }
+            }else{
+                Button(
+                    onClick = { navController.navigate("photoing") },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .padding(vertical = 24.dp)
+                ) {
+                    Text("\uD83D\uDCF7 다시 촬영하기", fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onTertiary)
+                }
             }
+
 
             Button(
                 onClick = { navController.navigate("loading") },
-                modifier = Modifier.fillMaxWidth(0.8f).padding(vertical = 24.dp)
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(vertical = 24.dp)
             ) {
                 Text("✔\uFE0F 알약 검색하기", fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onTertiary)
             }

@@ -83,4 +83,10 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences:1.0.0") // 데이터 저장 관련
 
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0") // 서버 통신 관련
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation ("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
+
 }
