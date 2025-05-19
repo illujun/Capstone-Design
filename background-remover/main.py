@@ -1,18 +1,23 @@
-from rembg import remove
-from PIL import Image
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import StreamingResponse
+from rembg import remove, new_session
 import io
 
-# 커스텀 모델 경로 설정
-from rembg.session_factory import new_session
-session = new_session(model_name='u2net_custom', model_options={'model_path': 'F:\\GitHub\\Capstone-Design\\models\\u2net_pill_136000.onnx'})
+app = FastAPI()
 
-# 이미지 불러오기
-with open('4.jpg', 'rb') as i:
-    input_data = i.read()
+# ONNX 커스텀 모델 세션 초기화
+model_path = "models/u2net_pill_136000.onnx"
+session = new_session(model_name='u2net_custom', model_path=model_path)
 
-# 배경제거
-output_data = remove(input_data, session=session)
+@app.post("/upload")
+async def upload_image(front: UploadFile = File(...), back: UploadFile = File(...)):
+    # front 이미지만 처리
+    input_bytes = await front.read()
+    output_bytes = remove(input_bytes, session=session)
 
-# 저장
-with open('4_nobg_136000.png', 'wb') as o:
-    o.write(output_data)
+    # 결과 PNG 스트림으로 반환
+    return StreamingResponse(
+        io.BytesIO(output_bytes),
+        media_type="image/png",
+        headers={"Content-Disposition": "inline; filename=front_nobg.png"}
+    )
