@@ -25,5 +25,4 @@ class UploadImage(private val context: Context){
             null
         }
     }
-
 }

@@ -55,7 +55,6 @@ fun Loading(navController: NavController){
         }else{
             showFailure = true
         }
-        navController.navigate("result")
     }
 
     Box(

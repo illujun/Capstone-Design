@@ -69,28 +69,39 @@ fun PillCalendar(navController: NavController, viewModel: CalendarViewModel){
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 items(slots) { slot ->
-                    Button(
-                        onClick = { selectedtime.value = slot },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (selectedtime.value == slot) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.surfaceVariant
-                        )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ){
-                        Text(slot)
+                        Text(
+                            if(slot=="morning") "아침"
+                            else if(slot=="afternoon") "점심"
+                            else "저녁",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Button(
+                            onClick = { selectedtime.value = slot },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (selectedtime.value == slot) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.surfaceVariant
+                            ),
+                            modifier = Modifier.fillMaxWidth(0.7f)
+                        ){
+
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ){
+                                items(curtime.toList()) { pillId ->
+                                    val pill = pillId.toIntOrNull()?.let {id->
+                                        dummyPillList.find { it.id == id }
+                                    }
+                                    pill?.let { Pill(pill = it, onClick = {navController.navigate("detail")} )}
+                                }
+                            }
+                        }
                     }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ){
-                items(curtime.toList()) { pillId ->
-                    val pill = dummyPillList.find { it.id == pillId.toInt() }
-
-                    pill?.let { Pill(pill = it) }
                 }
             }
         }

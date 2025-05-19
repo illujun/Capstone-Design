@@ -43,7 +43,7 @@ val Paneldetail = listOf( // 내부 컨텐츠 내용
     Panel("알약 사진 검색", "사진으로 알약을 검색할 수 있어요", R.drawable.main1, "photosearch"),
     Panel("알약 식별 검색", "색상, 모양 등으로 알약을 검색할 수 있어요", R.drawable.main2, "infosearch"),
     Panel("알약 즐겨찾기⭐", "즐겨찾기한 알약을 모아볼 수 있어요", R.drawable.main3, "favorite"),
-    Panel("알약 캘린더", "자주 먹는 알약을 알림 받아 보세요!", R.drawable.main4, "calender")
+    Panel("알약 캘린더", "자주 먹는 알약을 알림 받아 보세요!", R.drawable.main4, "calendar")
 )
 
 @Composable
