@@ -1,6 +1,7 @@
 package com.example.findpill.ui.screen
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,8 @@ import java.io.File
 fun Confirm(navController: NavController) {
     val  pill1 = navController.previousBackStackEntry?.savedStateHandle?.get<String>("temp_pill1")
     val pill2 = navController.previousBackStackEntry?.savedStateHandle?.get<String>("temp_pill2")
+    Log.d("UploadImage",  pill1 + "," + pill2)
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.secondary)
@@ -115,8 +118,8 @@ fun Confirm(navController: NavController) {
             }
 
             navController.currentBackStackEntry?.savedStateHandle?.apply{
-                set("pill1", pill1)
-                set("pill2", pill2)
+                set("temp_pill1", pill1)
+                set("temp_pill2", pill2)
             }
             if(pill1?.startsWith("content://") == true){
                 Button(

@@ -1,5 +1,6 @@
 package com.example.findpill.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
@@ -38,7 +39,7 @@ fun Loading(navController: NavController){
             try{
                 val result = uploadR.upload(pill1, pill2)
                 delay(500L)
-                if(result?.status=="ok"){
+                if(result==true){
                     showSuccess = true
 
                     navController.currentBackStackEntry?.savedStateHandle?.apply{
@@ -48,12 +49,15 @@ fun Loading(navController: NavController){
                     navController.navigate("result")
                 }else{
                     showFailure = true
+                    Log.d("UploadImage", "response가 NULL임")
                 }
             }catch(e:Exception){
                 showFailure = true
+                Log.d("UploadImage", "try 블럭 오류 발생")
             }
         }else{
             showFailure = true
+            Log.d("UploadImage", "이미지가 널 값임")
         }
     }
 
