@@ -28,4 +28,28 @@ public class PillService {
 
         return new PillLookupResponseDto(matches.get(0));
     }
+
+    public PillLookupResponseDto findById(Integer id) {
+        Drug drug = drugRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("약을 찾을 수 없습니다."));
+
+        return new PillLookupResponseDto(drug);
+    }
+
+    public List<PillLookupResponseDto> findByIds(List<Integer> ids) {
+        List<Drug> drugs = drugRepository.findAllById(ids);
+        return drugs.stream()
+                .map(PillLookupResponseDto::new)
+                .toList();
+    }
+
+    public List<PillLookupResponseDto> findByInfo(String shape, String color, String company) {
+        List<Drug> drugs = drugRepository.findByShapeAndColorAndCompany(shape, color, company);
+        return drugs.stream()
+                .map(PillLookupResponseDto::new)
+                .toList();
+    }
+
+
+
 }
