@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.findpill.ui.component.BottomNavigationBar
+import com.example.findpill.ui.component.DetailBottomNavigationBar
 import com.example.findpill.ui.screen.Album
 import com.example.findpill.ui.screen.Confirm
 import com.example.findpill.ui.screen.Confirm2
@@ -31,14 +32,16 @@ fun MainScaffold() {
 
     Scaffold (
         bottomBar = {
-            if (currentScreen != "loading"){
+            if( currentScreen?.startsWith("detail") == true){
+                DetailBottomNavigationBar(navController)
+            }
+            else if (currentScreen != "loading"){
                 BottomNavigationBar(navController)
             }
         }
     ) { innerPadding ->
         NavHost(navController = navController, startDestination = "main", modifier = Modifier.padding(innerPadding)) {
             composable("main") { MainScreen(navController)}
-            composable("detail") { DetailScreen(navController)}
             composable("photosearch") { PhotoSearch(navController) }
             composable("photoing") { Photoing(navController) }
             composable("confirm") { Confirm(navController)}
@@ -51,6 +54,12 @@ fun MainScaffold() {
             composable("calendar") {
                 val vm: CalendarViewModel = viewModel()
                 PillCalendar(navController = navController, viewModel = vm) }
+            composable("detail/{pillId}") { backStackEntry ->
+                val pillId = backStackEntry.arguments?.getString("pillId")?.toIntOrNull()
+                pillId?.let{
+                    DetailScreen(navController, pillId = it)
+                }
+            }
         }
 
     }

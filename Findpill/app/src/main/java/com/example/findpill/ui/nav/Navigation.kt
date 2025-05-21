@@ -26,7 +26,6 @@ fun AppNavHost(
 ){
     NavHost(navController = navController, startDestination = "main"){
         composable("main") { MainScreen(navController) }
-        composable("detail") { DetailScreen(navController) }
         composable("photosearch") { PhotoSearch(navController) }
         composable("photoing") { Photoing(navController) }
         composable("confirm") {Confirm(navController)}
@@ -38,5 +37,11 @@ fun AppNavHost(
         composable("confirm2") { Confirm2(navController) }
         composable("calendar") { val vm: CalendarViewModel = viewModel()
             PillCalendar(navController = navController, viewModel = vm) }
+        composable("detail/{pillId}") { backStackEntry ->
+            val pillId = backStackEntry.arguments?.getString("pillId")?.toIntOrNull()
+            pillId?.let{
+                DetailScreen(navController, pillId = it)
+            }
+        }
     }
 }
