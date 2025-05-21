@@ -56,8 +56,9 @@ fun MainScaffold() {
                 PillCalendar(navController = navController, viewModel = vm) }
             composable("detail/{pillId}") { backStackEntry ->
                 val pillId = backStackEntry.arguments?.getString("pillId")?.toIntOrNull()
+                val vm: CalendarViewModel = viewModel()
                 pillId?.let{
-                    DetailScreen(navController, pillId = it)
+                    DetailScreen(navController, pillId = it, viewModel = vm)
                 }
             }
         }
