@@ -84,6 +84,7 @@ fun Loading(navController: NavController){
                 confirmButton = {
                     Button(onClick = {
                         showSuccess = false
+                        navController.navigate("result")
                     }){
                         Text("확인")
                     }

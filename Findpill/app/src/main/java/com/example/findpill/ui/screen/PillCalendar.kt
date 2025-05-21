@@ -6,15 +6,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +39,10 @@ fun PillCalendar(navController: NavController, viewModel: CalendarViewModel){
     val morning by viewModel.morning.collectAsState(initial = emptySet())
     val afternoon by viewModel.afternoon.collectAsState(initial = emptySet())
     val night by viewModel.night.collectAsState(initial = emptySet())
+
+    val slots = listOf("morning", "afternoon", "night")
+
+
 
     val curtime = when (selectedtime.value){
         "morning" -> morning
@@ -63,47 +71,49 @@ fun PillCalendar(navController: NavController, viewModel: CalendarViewModel){
                 modifier = Modifier.padding(vertical = 24.dp)
             )
 
-            val slots = listOf("morning", "afternoon", "night")
-            LazyRow (
-                modifier = Modifier.fillMaxWidth().padding(12.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                items(slots) { slot ->
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ){
-                        Text(
-                            if(slot=="morning") "아침"
-                            else if(slot=="afternoon") "점심"
-                            else "저녁",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Button(
-                            onClick = { selectedtime.value = slot },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (selectedtime.value == slot) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.surfaceVariant
-                            ),
-                            modifier = Modifier.fillMaxWidth(0.7f)
-                        ){
 
+            BoxWithConstraints {
+                val rowWidth = maxWidth * 0.8f
+                val paddingWidth = maxWidth * 0.05f
+                LazyRow (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(slots) { slot ->
+                        Column(
+                            modifier = Modifier
+                                .width(rowWidth)
+                                .background(MaterialTheme.colorScheme.onPrimary, shape= RoundedCornerShape(30.dp))
+                                .padding(paddingWidth),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            Text(
+                                text = when (slot) {
+                                    "morning" -> "아침"
+                                    "afternoon" -> "점심"
+                                    "night" -> "저녁"
+                                    else -> ""
+                                },
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
                             LazyColumn(
-                                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                verticalArrangement = Arrangement.spacedBy(20.dp)
                             ){
-                                items(curtime.toList()) { pillId ->
-                                    val pill = pillId.toIntOrNull()?.let {id->
-                                        dummyPillList.find { it.id == id }
-                                    }
-                                    pill?.let { Pill(pill = it, onClick = {navController.navigate("detail")} )}
+                                items(dummyPillList) { pill ->
+                                    Pill(pill = pill, onClick = {navController.navigate("detail")})
                                 }
                             }
                         }
                     }
                 }
             }
+
         }
     }
 }

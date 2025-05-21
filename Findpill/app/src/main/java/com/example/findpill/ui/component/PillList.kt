@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -20,17 +21,16 @@ import com.example.findpill.R
 
 @Composable
 fun Pill(pill: PillInfo, onClick: () -> Unit) {
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .background(MaterialTheme.colorScheme.onSecondary, shape = RoundedCornerShape(12.dp))
-            .padding(16.dp),
-        shape = RoundedCornerShape(16.dp)
+            .background(MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(30.dp))
+            .padding(vertical=8.dp),
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Image(
                 painter = rememberAsyncImagePainter(
@@ -41,7 +41,9 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
                 contentDescription = null,
                 modifier = Modifier.size(80.dp)
             )
-            Column {
+            Column (
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Text(
                     pill.name,
                     fontWeight = FontWeight.SemiBold,
@@ -52,7 +54,6 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
                     pill.description,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(top = 12.dp)
                 )
             }
         }
