@@ -40,7 +40,11 @@ fun Result(navController: NavController){
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            TopBar(title = "검색 결과", onBackClick = {navController.navigate("photosearch")})
+            TopBar(title = "검색 결과", onBackClick = {
+                navController.popBackStack()
+                navController.navigate("photosearch"){
+
+            } })
 
               LazyColumn(
                 modifier = Modifier.fillMaxSize(),

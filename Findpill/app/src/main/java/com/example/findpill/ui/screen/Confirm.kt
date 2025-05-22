@@ -42,7 +42,9 @@ fun Confirm(navController: NavController) {
         ){
              TopBar(
                 title = "알약 사진 검색",
-                onBackClick = {navController.navigate("photosearch")}
+                onBackClick = {
+                    navController.popBackStack()
+                    navController.navigate("photosearch")}
             )
             Text(
                 "두 개의 사진이 맞나요?",
@@ -123,14 +125,18 @@ fun Confirm(navController: NavController) {
             }
             if(pill1?.startsWith("content://") == true){
                 Button(
-                    onClick = { navController.navigate("album") },
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate("album") },
                     modifier = Modifier.fillMaxWidth(0.8f).padding(vertical = 24.dp)
                 ) {
                     Text("\uD83D\uDDBC\uFE0F 다시 고르기", fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onTertiary)
                 }
             }else{
                 Button(
-                    onClick = { navController.navigate("photoing") },
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate("photoing") },
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .padding(vertical = 24.dp)

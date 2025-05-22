@@ -12,7 +12,7 @@ class panelviewModel : ViewModel(){
 
     suspend fun showingpanel(){ // 패널을 띄우는 함수
         if(!animated){
-            kotlinx.coroutines.delay(700)
+            kotlinx.coroutines.delay(300)
             _showpanel.value = true
             animated = true
         }

@@ -1,6 +1,8 @@
 package com.example.findpill
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +13,8 @@ import com.example.findpill.ui.screen.Confirm
 import com.example.findpill.ui.screen.Confirm2
 import com.example.findpill.ui.screen.MainScreen
 import com.example.findpill.ui.screen.DetailScreen
+import com.example.findpill.ui.screen.Favorite
+import com.example.findpill.ui.screen.InfoSearch
 import com.example.findpill.ui.screen.Loading
 import com.example.findpill.ui.screen.PhotoSearch
 import com.example.findpill.ui.screen.Photoing
@@ -18,6 +22,8 @@ import com.example.findpill.ui.screen.PillCalendar
 import com.example.findpill.ui.screen.Result
 import com.example.findpill.ui.screen.SettingScreen
 import com.example.findpill.ui.viewmodel.CalendarViewModel
+import com.example.findpill.ui.viewmodel.FavoriteViewModel
+import com.example.findpill.ui.viewmodel.GetPillViewModel
 import com.example.findpill.ui.viewmodel.SettingViewModel
 
 @Composable
@@ -35,14 +41,20 @@ fun AppNavHost(
             SettingScreen(navController = navController, viewModel = vm) }
         composable("album") { Album(navController) }
         composable("confirm2") { Confirm2(navController) }
-        composable("calendar") { val vm: CalendarViewModel = viewModel()
+        composable("calendar") { val vm: CalendarViewModel = hiltViewModel()
             PillCalendar(navController = navController, viewModel = vm) }
         composable("detail/{pillId}") { backStackEntry ->
             val pillId = backStackEntry.arguments?.getString("pillId")?.toIntOrNull()
-            val vm: CalendarViewModel = viewModel()
+            val vm: CalendarViewModel = hiltViewModel()
+            val vm2: GetPillViewModel = hiltViewModel()
             pillId?.let{
-                DetailScreen(navController, pillId = it, viewModel =vm)
+                DetailScreen(navController = navController, pillId = pillId, viewModel = vm, viewModel2 = vm2)
             }
+        }
+        composable("infosearch") { InfoSearch(navController = navController) }
+        composable("favorite") {
+            val vm: FavoriteViewModel = hiltViewModel()
+            Favorite(navController = navController, viewModel = vm)
         }
     }
 }

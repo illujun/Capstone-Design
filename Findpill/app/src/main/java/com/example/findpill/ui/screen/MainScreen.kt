@@ -50,7 +50,6 @@ val Paneldetail = listOf( // 내부 컨텐츠 내용
 fun MainScreen(navController: NavController){
     val viewModel: panelviewModel = viewModel()
     val showpanel by viewModel.showpanel.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.showingpanel()

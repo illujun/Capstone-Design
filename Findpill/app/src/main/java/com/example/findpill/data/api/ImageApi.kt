@@ -1,4 +1,4 @@
-package com.example.findpill.data.repository
+package com.example.findpill.data.api
 
 import com.example.findpill.data.model.UploadResponse
 import okhttp3.MultipartBody

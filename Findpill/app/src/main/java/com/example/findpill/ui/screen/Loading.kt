@@ -46,7 +46,6 @@ fun Loading(navController: NavController){
                         // 이 부분은 json body 구성 요소에 따라 유동적으로 조정
                         // set("pill_id", result.pill_id) 등
                     }
-                    navController.navigate("result")
                 }else{
                     showFailure = true
                     Log.d("UploadImage", "response가 NULL임")

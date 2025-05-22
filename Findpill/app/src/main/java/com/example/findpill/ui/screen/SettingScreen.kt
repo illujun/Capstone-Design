@@ -1,5 +1,6 @@
 package com.example.findpill.ui.screen
 
+import android.widget.CalendarView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,11 +20,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.findpill.ui.component.ConfirmDelete
 import com.example.findpill.ui.component.TopBar
 import com.example.findpill.ui.utils.DeleteCalendar
 import com.example.findpill.ui.utils.DeleteFavorite
+import com.example.findpill.ui.viewmodel.CalendarViewModel
+import com.example.findpill.ui.viewmodel.FavoriteViewModel
 import com.example.findpill.ui.viewmodel.SettingViewModel
 import kotlinx.coroutines.coroutineScope
 
@@ -34,16 +38,19 @@ fun SettingScreen(navController: NavController, viewModel: SettingViewModel){
     var isfavorite by remember { mutableStateOf(false) }
     var iscalendar by remember { mutableStateOf(false) }
 
+    val fViewModel: FavoriteViewModel = hiltViewModel()
+    val cViewModel: CalendarViewModel = hiltViewModel()
+
     if(showDel){
         ConfirmDelete(
             onDismiss = { showDel = false },
             onConfirm = {
                 showDel = false
                 if(isfavorite){
-                    DeleteFavorite()
+                    DeleteFavorite(fViewModel)
                     isfavorite = false
                 }else if(iscalendar){
-                    DeleteCalendar()
+                    DeleteCalendar(cViewModel)
                     iscalendar = false
                 }
             }
