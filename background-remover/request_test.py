@@ -1,6 +1,6 @@
 import requests
 
-url = "http://localhost:1321/upload"  # 서버 주소
+url = "http://210.217.79.69:1321/upload"  # 서버 주소
 front_image_path = "test_images/6.jpg"
 back_image_path = "test_images/7.jpg"  # 더미 파일 필요
 
