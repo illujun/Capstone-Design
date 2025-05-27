@@ -1,0 +1,12 @@
+# PyCharm 프로젝트 설정 무시
+.idea/
+
+# 모델 및 학습 결과 무시
+runs/
+images/
+labels/
+converted_jsons/
+yolov8n.pt
+
+# 가상환경 폴더 무시
+.venv/

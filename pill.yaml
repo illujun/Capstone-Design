@@ -1,0 +1,21 @@
+train: C:/Users/tkdwn/PycharmProjects/YOLOtest/images/train
+val: C:/Users/tkdwn/PycharmProjects/YOLOtest/images/val
+
+nc: 15
+
+names:
+  - 갈색
+  - 노랑
+  - 분홍
+  - 빨강
+  - 전구색
+  - 주광색
+  - 주백색
+  - 초록
+  - 투명
+  - 파랑
+  - 하양
+  - 경질캡슐제
+  - 연질캡슐제
+  - 저작정
+  - 정제
