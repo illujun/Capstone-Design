@@ -1,38 +1,62 @@
 package com.example.med_classification.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "drug")
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Drug {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer drugId;
+    @Column(name = "idx", nullable = false, length = 50)
+    private String idx;  // 약 고유 ID
 
-    @Column(name = "dl_name")
-    private String name;
+    @Column(nullable = false, length = 255)
+    private String name;  // 약 이름
 
-    @Column(name = "dl_company")
-    private String company;
+    @Column(length = 100)
+    private String color;  // 색상
 
-    @Column(name = "print_front")
-    private String imprintFront;
+    @Column(length = 255)
+    private String material;  // 재료
 
-    @Column(name = "print_back")
-    private String imprintBack;
+    @Column(length = 255)
+    private String company;  // 제조사
 
-    @Column(name = "drug_shape")
-    private String shape;
+    @Column(length = 100)
+    private String shape;  // 모양
 
-    @Column(name = "color_class1")
-    private String color;
+    @Column(length = 50)
+    private String divided;  // 나눗선
 
-    @Column(name = "mark_code_front_img")
-    private String imageUrl;
+    @Column(name = "print_front", length = 100)
+    private String printFront;  // 앞면 각인
+
+    @Column(name = "print_back", length = 100)
+    private String printBack;  // 뒷면 각인
+
+    @Column(columnDefinition = "TEXT")
+    private String purpose;  // 사용 용도
+
+    @Column(columnDefinition = "TEXT")
+    private String effect;  // 효과
+
+    @Column(columnDefinition = "TEXT")
+    private String dosage;  // 복용법
+
+    @Column(columnDefinition = "TEXT")
+    private String warning;  // 주의사항
+
+    @Column(columnDefinition = "TEXT")
+    private String image;  // 이미지 URL
 }
-
