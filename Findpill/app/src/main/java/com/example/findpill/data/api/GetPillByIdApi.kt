@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface GetPillByIdApi{
-    @GET("api/pill/getpill")
-    suspend fun getPillById(@Path("id") id:Int): PillInfo?
+    @GET("api/pill/getpill/{id}")
+    suspend fun getPillById(@Path("id") id:String): PillInfo?
 }

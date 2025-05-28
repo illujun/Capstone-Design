@@ -63,7 +63,7 @@ fun MainScaffold() {
                 val vm: CalendarViewModel = hiltViewModel()
                 PillCalendar(navController = navController, viewModel = vm) }
             composable("detail/{pillId}") { backStackEntry ->
-                val pillId = backStackEntry.arguments?.getString("pillId")?.toIntOrNull()
+                val pillId = backStackEntry.arguments?.getString("pillId")
                 val vm: CalendarViewModel = hiltViewModel()
                 val vm2: GetPillViewModel = hiltViewModel()
                 pillId?.let{

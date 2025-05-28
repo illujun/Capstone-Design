@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -17,14 +18,23 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+    @Named("beatmania")
+    fun provideBeatmaniaRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("http://beatmania.app:1321/") // 여기에 실제 API 주소
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     @Provides
     @Singleton
-    fun provideInfoSearchApi(retrofit: Retrofit): InfoSearchApi =
+    @Named("findpill")
+    fun provideFindpillRetrofit(): Retrofit = Retrofit.Builder()
+        .baseUrl("http://172.30.1.25:8080/") // 여기에 실제 API 주소
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    @Provides
+    @Singleton
+    fun provideInfoSearchApi(@Named("findpill")retrofit: Retrofit): InfoSearchApi =
         retrofit.create(InfoSearchApi::class.java)
 
     @Provides
@@ -34,7 +44,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGetPillByIdApi(retrofit: Retrofit): GetPillByIdApi =
+    fun provideGetPillByIdApi(@Named("findpill")retrofit: Retrofit): GetPillByIdApi =
         retrofit.create(GetPillByIdApi::class.java)
 
     @Provides

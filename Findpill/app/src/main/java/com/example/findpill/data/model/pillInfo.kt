@@ -1,5 +1,6 @@
 package com.example.findpill.data.model
 
+/*
 data class PillInfo(
     val image: Int,
     val id: Int,
@@ -15,4 +16,21 @@ data class PillInfo(
     val effect: String,
     val method: String,
     val usage: String,
+)
+*/
+
+data class PillInfo(
+    val pill_id: String,
+    val pill_name: String,
+    val description: String,
+    val manufacturer: String,
+    val main_ingredient: String,
+    val image_url: String,
+    val ocr_front: String,
+    val ocr_back: String
+)
+
+data class PillSearchResponse(
+    val status: String,
+    val pill: List<PillInfo>
 )

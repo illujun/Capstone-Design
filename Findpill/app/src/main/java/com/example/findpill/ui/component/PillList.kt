@@ -34,7 +34,7 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
         ) {
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = pill.image,
+                    model = pill.image_url,
                     error = painterResource(R.drawable.pill1),
                     placeholder = painterResource(id = R.drawable.pill2)
                 ),
@@ -45,13 +45,13 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    pill.name,
+                    text = pill.pill_name?.ifBlank { "이름 없음" } ?: "이름 없음",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    pill.description,
+                    text = pill.description?.ifBlank { "설명 없음" } ?: "설명 없음",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -60,7 +60,7 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
     }
 }
 
-
+/*
 val dummyPillList = listOf(
     PillInfo(
         id = 1234,
@@ -109,5 +109,39 @@ val dummyPillList = listOf(
         effect = "근육통, 생리통, 감기 증상 완화",
         method = "1일 3회, 1회 1~2정 복용",
         usage = "최대 1일 6정 초과 금지"
+    )
+)
+*/
+
+val dummyPillList = listOf(
+    PillInfo(
+        pill_id = "D321",
+        pill_name = "타이레놀 정 500mg",
+        description = "진통 및 해열에 사용되는 약물입니다.",
+        manufacturer = "한국얀센",
+        main_ingredient = "아세트아미노펜",
+        image_url = "https://example.com/images/tylenol.jpg",
+        ocr_front = "TYLENOL",
+        ocr_back = ""
+    ),
+    PillInfo(
+        pill_id = "D322",
+        pill_name = "세로나민 캡슐",
+        description = "우울증 치료에 사용되는 약물입니다.",
+        manufacturer = "한미약품",
+        main_ingredient = "플루옥세틴",
+        image_url = "https://example.com/images/seronamin.jpg",
+        ocr_front = "SRN",
+        ocr_back = ""
+    ),
+    PillInfo(
+        pill_id = "D323",
+        pill_name = "이부프로펜 정 200mg",
+        description = "염증 완화 및 해열 작용이 있는 약물입니다.",
+        manufacturer = "대웅제약",
+        main_ingredient = "이부프로펜",
+        image_url = "https://example.com/images/ibu.jpg",
+        ocr_front = "IBU",
+        ocr_back = ""
     )
 )

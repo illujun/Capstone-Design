@@ -18,7 +18,7 @@ class GetPillViewModel @Inject constructor(
     private val _pillInfo = MutableStateFlow<PillInfo?>(null)
     val pillInfo: StateFlow<PillInfo?> = _pillInfo
 
-    fun fetchPillInfoById(id: Int){
+    fun fetchPillInfoById(id: String){
         viewModelScope.launch{
             try{
                 val result = repository.getPillById(id)

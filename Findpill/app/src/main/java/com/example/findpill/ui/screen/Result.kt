@@ -51,7 +51,7 @@ fun Result(navController: NavController){
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
                 items(whichpill) { pill ->
-                    Pill(pill = pill, onClick = {navController.navigate("detail/${pill.id}")})
+                    Pill(pill = pill, onClick = {navController.navigate("detail/${pill.pill_id}")})
                 }
             }
 

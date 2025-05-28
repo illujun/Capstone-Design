@@ -9,6 +9,7 @@ import com.example.findpill.data.model.PillInfo
 import com.example.findpill.data.repository.GetPillById
 import com.example.findpill.data.settingsDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -34,30 +35,47 @@ class FavoriteViewModel @Inject constructor(
     private val _pillList = MutableStateFlow<List<PillInfo>>(emptyList())
     val pillList: StateFlow<List<PillInfo>> = _pillList
 
-    fun loadFavoritePills(){
-        viewModelScope.launch{
+    private var favoritesJob: Job? = null
+    fun loadFavoritePills() {
+        favoritesJob?.cancel()
+        favoritesJob = viewModelScope.launch {
             favorites.collect { ids ->
+                android.util.Log.d("FavoriteViewModel", "⭐ 즐겨찾기 ID 수집됨: $ids")
+
                 val result = coroutineScope {
                     ids.map { id ->
                         async {
                             try {
-                                getPillById.getPillById(id.toInt())
+                                android.util.Log.d("FavoriteViewModel", "📡 ID $id 에 대한 알약 정보 요청 중")
+                                val pill = getPillById.getPillById(id)
+                                if (pill == null) {
+                                    android.util.Log.w("FavoriteViewModel", "⚠️ ID $id 에 대한 응답이 null임")
+                                } else {
+                                    android.util.Log.d("FavoriteViewModel", "✅ ID $id 에 대한 알약 정보 수신 완료: ${pill.pill_name}")
+                                }
+                                pill
                             } catch (e: Exception) {
+                                android.util.Log.e("FavoriteViewModel", "❌ ID $id 에 대한 요청 중 예외 발생: ${e.message}", e)
                                 null
                             }
                         }
                     }.awaitAll().filterNotNull()
                 }
+
+                android.util.Log.d("FavoriteViewModel", "🎯 최종 수신된 알약 개수: ${result.size}")
                 _pillList.value = result
             }
         }
     }
+
 
     fun addFavorite(id: String) = viewModelScope.launch{
         dataStore.edit { prefs ->
             val current = prefs[FavoriteKeys.FAVORITES] ?: emptySet()
             prefs[FavoriteKeys.FAVORITES] = current + id
         }
+
+        loadFavoritePills()
     }
 
     fun removeFavorite(id:String) = viewModelScope.launch{
@@ -65,6 +83,7 @@ class FavoriteViewModel @Inject constructor(
             val current = prefs[FavoriteKeys.FAVORITES] ?: emptySet()
             prefs[FavoriteKeys.FAVORITES] = current - id
         }
+        loadFavoritePills()
     }
 
     fun clearFavorite() = viewModelScope.launch {

@@ -30,16 +30,26 @@ class InfoSearchViewModel @Inject constructor(
             _loading.value = true
             _error.value = null
 
-            val response = repository.pillInfoSearch(request)
-            if(response != null){
-                _result.value = response
-                onSuccess()
-            }else{
-                _error.value = "검색 실패"
-                Log.w("InfoSearchViewModel", "API 응답이 null입니다. 서버 응답 확인 필요.")
-            }
+            Log.d("InfoSearchViewModel", "알약 검색 요청: $request")
 
-            _loading.value = false
+            try {
+                val response = repository.pillInfoSearch(request)
+
+                if (response != null) {
+                    _result.value = response.pill
+                    Log.d("InfoSearchViewModel", "검색 성공: ${response.pill.size}개")
+                    onSuccess()
+                } else {
+                    _error.value = "검색 결과가 없습니다."
+                    Log.w("InfoSearchViewModel", "검색 결과 없음 또는 null. request=$request")
+                }
+
+            } catch (e: Exception) {
+                _error.value = "서버 요청 중 오류 발생"
+                Log.e("InfoSearchViewModel", "API 호출 중 예외 발생: ${e.message}", e)
+            } finally {
+                _loading.value = false
+            }
         }
     }
 }

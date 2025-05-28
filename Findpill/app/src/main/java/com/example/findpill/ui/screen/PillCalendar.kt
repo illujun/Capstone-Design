@@ -111,7 +111,7 @@ fun PillCalendar(navController: NavController, viewModel: CalendarViewModel = hi
                                     verticalArrangement = Arrangement.spacedBy(20.dp)
                                 ){
                                     items(list) { pill ->
-                                        Pill(pill = pill, onClick = {navController.navigate("detail/${pill.id}")})
+                                        Pill(pill = pill, onClick = {navController.navigate("detail/${pill.pill_id}")})
                                     }
                                 }
                             }

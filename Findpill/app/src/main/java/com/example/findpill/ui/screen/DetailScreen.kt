@@ -32,7 +32,7 @@ import com.example.findpill.ui.viewmodel.CalendarViewModel
 import com.example.findpill.ui.viewmodel.GetPillViewModel
 
 @Composable
-fun DetailScreen(navController: NavController, pillId: Int, viewModel: CalendarViewModel,
+fun DetailScreen(navController: NavController, pillId: String, viewModel: CalendarViewModel,
                  viewModel2: GetPillViewModel = hiltViewModel()
 ) {
     Log.d("GetPillById", "Start DetailScreen, pillId: $pillId")
@@ -44,33 +44,24 @@ fun DetailScreen(navController: NavController, pillId: Int, viewModel: CalendarV
     val pillInfo by viewModel2.pillInfo.collectAsState()
 
     // null일 경우 예시 데이터로 대체
-    val displayData = pillInfo ?: dummyPillList.find{it.id ==pillId } ?: PillInfo(
-        image = R.drawable.pill2,
-        id = 0,
-        name = "타이레놀",
+    val displayData = pillInfo ?: dummyPillList.find { it.pill_id == pillId.toString() } ?: PillInfo(
+        pill_id = "0",
+        pill_name = "타이레놀",
         description = "알약의 특징",
-        company = "동아제약",
-        material = "아세트아미노펜, 클로르페니라민",
-        shape = "모양",
-        color = "흰색",
-        print_front = "D123",
-        print_back = "",
-        effect = "감기 증상 완화",
-        method = "1일 3회 식후 복용",
-        usage = "두통 시에 복용",
-        warning = "졸음 유발 가능, 운전 주의",
+        manufacturer = "동아제약",
+        main_ingredient = "아세트아미노펜, 클로르페니라민",
+        image_url = "https://example.com/images/fallback.jpg",
+        ocr_front = "D123",
+        ocr_back = ""
     )
 
     val pillDetail = listOf(
-        "약 이름" to displayData.name,
-        "제약회사" to displayData.company,
-        "성분" to displayData.material,
-        "색상" to displayData.color,
-        "모양" to displayData.shape,
-        "각인" to displayData.print_front,
-        "효능/효과" to displayData.effect,
-        "용법" to displayData.method,
-        "주의사항" to displayData.warning
+        "약 이름" to displayData.pill_name,
+        "제약회사" to displayData.manufacturer,
+        "성분" to displayData.main_ingredient,
+        "각인 앞면" to displayData.ocr_front,
+        "각인 뒷면" to displayData.ocr_back,
+        "설명" to displayData.description
     )
 
     val morning by viewModel.morning.collectAsState(initial = emptySet())
@@ -101,7 +92,11 @@ fun DetailScreen(navController: NavController, pillId: Int, viewModel: CalendarV
             ) {
                 item {
                     Image(
-                        painter = painterResource(R.drawable.pill1),
+                        painter = rememberAsyncImagePainter(
+                            model = displayData.image_url,
+                            placeholder = painterResource(R.drawable.pill1),
+                            error = painterResource(R.drawable.pill1)
+                        ),
                         contentDescription = null,
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier
@@ -113,7 +108,7 @@ fun DetailScreen(navController: NavController, pillId: Int, viewModel: CalendarV
 
                 item{
                     Text(
-                        text = pillDetail[0].second,
+                        text = pillDetail.getOrNull(0)?.second?.ifBlank { "정보 없음" } ?: "정보 없음",
                         fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 26.sp
@@ -136,7 +131,7 @@ fun DetailScreen(navController: NavController, pillId: Int, viewModel: CalendarV
                             fontSize = 20.sp
                         )
                         Text(
-                            text = value,
+                            text = value?.ifBlank { "정보 없음" } ?: "정보 없음",
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 20.sp
                         )

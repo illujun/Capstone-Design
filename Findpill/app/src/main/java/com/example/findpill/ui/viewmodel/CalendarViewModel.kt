@@ -66,7 +66,7 @@ class CalendarViewModel @Inject constructor(
         map{
             async{
                 try{
-                    getPillById.getPillById(it.toInt())
+                    getPillById.getPillById(it)
                 }catch(_: Exception){
                     null
                 }

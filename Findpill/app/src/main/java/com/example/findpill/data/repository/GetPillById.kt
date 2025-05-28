@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetPillById @Inject constructor(
     private val api: GetPillByIdApi
 ) {
-    suspend fun getPillById(id: Int): PillInfo?{
+    suspend fun getPillById(id: String): PillInfo?{
         return try{
             api.getPillById(id)
         }catch (e:Exception){

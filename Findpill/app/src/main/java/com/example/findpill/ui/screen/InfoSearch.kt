@@ -114,12 +114,12 @@ fun InfoSearch(navController: NavController){
                     Button(
                         onClick = {
                             val request = InfoSearchRequest(
-                                color = Color,
-                                engraved1 = print1,
-                                engraved2 = print2,
-                                shape = Shape,
-                                divided = Divided,
-                                form = Form
+                                color = if (Color == "전체") null else Color,
+                                engraved1 = print1.takeIf { it.isNotBlank() },
+                                engraved2 = print2.takeIf { it.isNotBlank() },
+                                shape = if (Shape == "전체") null else Shape,
+                                divided = if (Divided == "전체") null else Divided,
+                                //form = if (Form == "전체") null else Form
                             )
 
                             viewModel.search(request){
@@ -129,7 +129,7 @@ fun InfoSearch(navController: NavController){
                                   },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
-                            .padding(vertical = 24.dp)
+                            .padding(top = 24.dp, bottom = 48.dp)
                     ) {
                         Text("✔\uFE0F 알약 검색하기", fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onTertiary)
                     }
