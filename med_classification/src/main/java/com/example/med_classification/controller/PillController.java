@@ -26,23 +26,13 @@ public class PillController {
 //        return new ResponseDto<>(true,result);
 //    }
 
-    @GetMapping("/getpill")
-    public ResponseEntity<Object> getPill(@RequestParam("id") String id) {
+    @GetMapping("/getpill/{id}")
+    public ResponseEntity<Object> getPill(@PathVariable String id) {
         try {
             PillLookupResponseDto pillDto = pillService.findById(id);
-            return ResponseEntity.ok(
-                    Map.of(
-                            "status", "ok",
-                            "pill", pillDto
-                    )
-            );
+            return ResponseEntity.ok(pillDto);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    Map.of(
-                            "status", "error",
-                            "message", "알약 정보를 찾을 수 없습니다."
-                    )
-            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -56,7 +46,7 @@ public class PillController {
     @PostMapping("/getpillbyinfo")
     public ResponseEntity<Object> getPillByInfo(@RequestBody PillInfoRequestDto dto) {
         try {
-            PillLookupResponseDto pillDto = pillService.findByInfo(dto);
+            List<PillLookupResponseDto> pillDto = pillService.findByInfo(dto);
             return ResponseEntity.ok(
                     Map.of("status", "ok", "pill", pillDto)
             );

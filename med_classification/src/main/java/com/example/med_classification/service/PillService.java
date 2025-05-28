@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class PillService {
 //                .toList();
 //    }
 
-    public PillLookupResponseDto findByInfo(PillInfoRequestDto dto) {
+    public List<PillLookupResponseDto> findByInfo(PillInfoRequestDto dto) {
         List<Drug> results = drugRepository.findByMultipleAttributes(
                 dto.getColor(),
                 dto.getEngraved1(),
@@ -58,7 +59,10 @@ public class PillService {
             throw new RuntimeException("알약 정보를 찾을 수 없습니다.");
         }
 
-        return new PillLookupResponseDto(results.get(0)); // 가장 첫 결과만 반환
+        // Drug → PillLookupResponseDto 변환
+        return results.stream()
+                .map(PillLookupResponseDto::fromEntity) // 정적 팩토리 메서드 필요
+                .collect(Collectors.toList());
     }
 
 
