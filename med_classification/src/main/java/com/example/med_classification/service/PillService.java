@@ -83,7 +83,7 @@ public List<Drug> findPillByDetection(PillLookupRequestDto dto) {
     return drugs;
 }
 
-    public PillLookupResponseDto findById(String id) {
+    public PillLookupResponseDto findById(Integer id) {
         Drug drug = drugRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("약을 찾을 수 없습니다."));
         return new PillLookupResponseDto(drug);
@@ -103,7 +103,6 @@ public List<Drug> findPillByDetection(PillLookupRequestDto dto) {
                 dto.getEngraved1(),
                 dto.getEngraved2(),
                 dto.getShape(),
-                dto.getDivided(),
                 dto.getForm()
         );
 

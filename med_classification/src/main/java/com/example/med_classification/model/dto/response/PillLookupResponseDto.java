@@ -11,36 +11,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PillLookupResponseDto {
-    private String pill_id;
+    private Integer pill_id;
     private String pill_name;
-    private String description;
-    private String manufacturer;
+    private String color;
     private String main_ingredient;
-    private String image_url;
+    private String manufacturer;
+    private String shape;
     private String ocr_front;
     private String ocr_back;
+    private String effect;
+    private String dosage;
+    private String warning;
+    private String image_url;
 
     public PillLookupResponseDto(Drug drug) {
         this.pill_id = drug.getIdx();
         this.pill_name = drug.getName();
-        this.description = drug.getPurpose(); // 추후 DB 확장 또는 추론 필요
-        this.manufacturer = drug.getCompany();
+        this.color = drug.getColor();
         this.main_ingredient = drug.getMaterial();
-        this.image_url = drug.getImage();
+        this.manufacturer = drug.getCompany();
+        this.shape = drug.getShape();
         this.ocr_front = drug.getPrintFront();
         this.ocr_back = drug.getPrintBack();
+        this.effect = drug.getEffect();
+        this.dosage = drug.getDosage();
+        this.warning = drug.getWarning();
+        this.image_url = drug.getImage();
     }
-
-//    public static PillLookupResponseDto fromEntity(Drug drug) {
-//        PillLookupResponseDto dto = new PillLookupResponseDto();
-//        dto.pill_id = drug.getIdx();
-//        dto.pill_name = drug.getName();
-//        dto.description = drug.getPurpose();
-//        dto.manufacturer = drug.getCompany();
-//        dto.main_ingredient = drug.getMaterial();
-//        dto.image_url = drug.getImage();
-//        dto.ocr_front = drug.getPrintFront();
-//        dto.ocr_back = drug.getPrintBack();
-//        return dto;
-//    }
 }

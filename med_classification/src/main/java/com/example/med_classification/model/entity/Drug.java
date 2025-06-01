@@ -1,9 +1,6 @@
 package com.example.med_classification.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class Drug {
 
     @Id
-    @Column(name = "idx", nullable = false, length = 50)
-    private String idx;  // 약 고유 ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT와 매칭
+    private Integer idx;  // 약 고유 ID
 
     @Column(nullable = false, length = 255)
     private String name;  // 약 이름
@@ -36,17 +33,11 @@ public class Drug {
     @Column(length = 100)
     private String shape;  // 모양
 
-    @Column(length = 50)
-    private String divided;  // 나눗선
-
     @Column(name = "print_front", length = 100)
     private String printFront;  // 앞면 각인
 
     @Column(name = "print_back", length = 100)
     private String printBack;  // 뒷면 각인
-
-    @Column(columnDefinition = "TEXT")
-    private String purpose;  // 사용 용도
 
     @Column(columnDefinition = "TEXT")
     private String effect;  // 효과
