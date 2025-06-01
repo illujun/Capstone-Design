@@ -3,7 +3,6 @@ package com.example.med_classification.controller;
 import com.example.med_classification.model.dto.request.PillInfoRequestDto;
 import com.example.med_classification.model.dto.request.PillLookupRequestDto;
 import com.example.med_classification.model.dto.response.PillLookupResponseDto;
-import com.example.med_classification.model.dto.response.ResponseDto;
 import com.example.med_classification.model.entity.Drug;
 import com.example.med_classification.service.PillService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +37,7 @@ public class PillController {
     }
 
 
+
 //    @GetMapping("/getpills")
 //    public ResponseDto<List<PillLookupResponseDto>> getPills(@RequestParam("ids") List<Integer> ids) {
 //        List<PillLookupResponseDto> result = pillService.findByIds(ids);
@@ -61,17 +61,23 @@ public class PillController {
     @PostMapping("/lookup")
     public ResponseEntity<Object> lookup(@RequestBody PillLookupRequestDto dto) {
         try {
-            List<Drug> drugs = pillService.findPillByDetection(dto);
+            List<Drug> results = pillService.findByPrintsWithFallback(dto);
+
+            String status = results.size() > 1 ? "similar" : "ok";
+
             return ResponseEntity.ok(Map.of(
-                    "status", "ok",
-                    "pill", drugs
+                    "status", status,
+                    "pill", results
             ));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("status", "error", "message", e.getMessage())
             );
         }
     }
+
+
 
 
 

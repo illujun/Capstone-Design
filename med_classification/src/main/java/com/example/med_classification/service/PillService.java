@@ -9,12 +9,50 @@ import com.example.med_classification.repository.DrugRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.text.similarity.LevenshteinDistance;
 
 @Service
 @RequiredArgsConstructor
 public class PillService {
+
+    public List<Drug> findByPrintsWithFallback(PillLookupRequestDto dto) {
+        String front = dto.getPrintFront();
+        String back = dto.getPrintBack();
+
+        List<Drug> allDrugs = drugRepository.findAll();
+
+        // 1. printFront + printBack 완전 일치
+        for (Drug drug : allDrugs) {
+            if (front != null && back != null &&
+                    drug.getPrintFront().equalsIgnoreCase(front) &&
+                    drug.getPrintBack().equalsIgnoreCase(back)) {
+                return List.of(drug);
+            }
+        }
+
+        // 2. printFront 또는 printBack 하나만 일치
+        for (Drug drug : allDrugs) {
+            if ((front != null && drug.getPrintFront().equalsIgnoreCase(front)) ||
+                    (back != null && drug.getPrintBack().equalsIgnoreCase(back))) {
+                return List.of(drug);
+            }
+        }
+
+        // 3. 모두 불일치 → 유사도 측정
+        LevenshteinDistance distance = new LevenshteinDistance();
+
+        return allDrugs.stream()
+                .sorted(Comparator.comparingInt(d ->
+                        distance.apply(d.getPrintFront(), front != null ? front : "") +
+                                distance.apply(d.getPrintBack(), back != null ? back : "")
+                ))
+                .limit(4)
+                .collect(Collectors.toList());
+    }
 
     private final DrugRepository drugRepository;
 

@@ -12,4 +12,6 @@ public class PillInfoRequestDto {
     private String shape;
     private String divided;
     private String form;  // 추가됨
+    private String printFront;
+    private String printBack;
 }
