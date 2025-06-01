@@ -63,7 +63,7 @@ fun PhotoSearch(navController: NavController){
                     contentAlignment = Alignment.Center
                 ){
                     Image(
-                        painter = painterResource(id = R.drawable.ocr1),
+                        painter = painterResource(id = R.drawable.pillintroduce),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxWidth(0.9f).fillMaxHeight(0.9f),
@@ -95,7 +95,7 @@ fun PhotoSearch(navController: NavController){
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "손과 같이 대비되는 색을 배경으로 두고 촬영하면 더 잘 인식돼요.",
+                        text = "여러 개를 촬영할 경우 왼쪽부터 순서대로 놓아주세요. 뒷면을 촬영할 때 순서를 바꾸지 마세요.",
                         style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 28.sp),
                         fontSize = 18.sp,
                         modifier = Modifier.padding(start = 8.dp)
