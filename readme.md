@@ -39,6 +39,9 @@ pip install transformers datasets google-cloud-vision opencv-python-headless
 ### Pill_server (Spring Boot) 실행 환경
 - JDK 17.0.12 필요
 
+### Google Vision 계정 키
+- Google Vision 사용자격을 담은 key 파일이 별도로 필요합니다. **(pill-integrated/googlecredentialsocrkeysetting.json)**
+
 ## 실행 방법
 
 ### Pill_server 실행
@@ -53,13 +56,12 @@ pip install transformers datasets google-cloud-vision opencv-python-headless
 ## 모델 파일
 
 두 모델 파일은 모두 다음 위치에 있어야 합니다:
-
     /pill-integrated/models/
 
 | 모델명     | 설명            | 파일명                    | 다운로드 링크              |
 |------------|-----------------|---------------------------|----------------------------|
-| YOLO 모델  | 알약 객체 탐지용 | best.pt                   | [YOLO 모델 다운로드 링크] |
-| U²-Net 모델 | 배경 제거용     | u2net_pill_136000.onnx    | [U²-Net 모델 다운로드 링크] |
+| YOLO 모델  | 알약 객체 탐지용 | best.pt                   | [YOLO 모델 다운로드 링크](https://drive.google.com/file/d/1QKygN9z-YhJoT3SlxCAVPojqyPo973mL/view?usp=sharing) |
+| U²-Net 모델 | 배경 제거용     | u2net_pill_136000.onnx    | [U²-Net 모델 다운로드 링크](https://drive.google.com/file/d/1inuIfO1hHVhKxUwxeA0lSy1etcYV_osY/view?usp=sharing) |
 
 
 ## 기타
