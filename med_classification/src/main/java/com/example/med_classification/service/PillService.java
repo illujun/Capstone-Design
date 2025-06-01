@@ -100,21 +100,21 @@ public List<Drug> findPillByDetection(PillLookupRequestDto dto) {
     public List<PillLookupResponseDto> findByInfo(PillInfoRequestDto dto) {
         List<Drug> results = drugRepository.findByMultipleAttributes(
                 dto.getColor(),
-                dto.getEngraved1(),
-                dto.getEngraved2(),
+                dto.getPrint_front(),
+                dto.getPrint_back(),
                 dto.getShape(),
-                dto.getForm()
+                dto.getCompany()
         );
 
         if (results.isEmpty()) {
             throw new RuntimeException("알약 정보를 찾을 수 없습니다.");
         }
 
-        // Drug → PillLookupResponseDto 변환
         return results.stream()
-                .map(PillLookupResponseDto::new) // 정적 팩토리 메서드 필요
+                .map(PillLookupResponseDto::new)
                 .collect(Collectors.toList());
     }
+
 
 
 

@@ -11,31 +11,35 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PillLookupResponseDto {
-    private Integer pill_id;
-    private String pill_name;
+    private Integer idx;
+    private String name;
     private String color;
-    private String main_ingredient;
-    private String manufacturer;
+    private String material;
+    private String company;
     private String shape;
-    private String ocr_front;
-    private String ocr_back;
+    private String print_front;
+    private String print_back;
     private String effect;
     private String dosage;
     private String warning;
-    private String image_url;
+    private String image;
 
     public PillLookupResponseDto(Drug drug) {
-        this.pill_id = drug.getIdx();
-        this.pill_name = drug.getName();
+        this.idx = drug.getIdx();
+        this.name = drug.getName();
         this.color = drug.getColor();
-        this.main_ingredient = drug.getMaterial();
-        this.manufacturer = drug.getCompany();
+        this.material = drug.getMaterial();
+        this.company = drug.getCompany();
         this.shape = drug.getShape();
-        this.ocr_front = drug.getPrintFront();
-        this.ocr_back = drug.getPrintBack();
+        this.print_front = drug.getPrintFront();
+        this.print_back = drug.getPrintBack();
         this.effect = drug.getEffect();
         this.dosage = drug.getDosage();
         this.warning = drug.getWarning();
-        this.image_url = drug.getImage();
+        this.image = drug.getImage();
+    }
+
+    public static PillLookupResponseDto fromEntity(Drug drug) {
+        return new PillLookupResponseDto(drug);
     }
 }

@@ -30,21 +30,15 @@ public class PillController {
     public ResponseEntity<Object> getPill(@PathVariable Integer id) {
         try {
             PillLookupResponseDto pillDto = pillService.findById(id);
-            return ResponseEntity.ok(
-                    Map.of(
-                            "status", "ok",
-                            "pill", List.of(pillDto)  // ✅ 리스트로 감싸기
-                    )
-            );
+            return ResponseEntity.ok(pillDto); // ✅ 단일 객체 그대로 반환
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    Map.of(
-                            "status", "error",
-                            "message", "알약 정보를 찾을 수 없습니다."
-                    )
+                    Map.of("message", "알약 정보를 찾을 수 없습니다.")
             );
         }
     }
+
+
 
 
 
@@ -59,14 +53,16 @@ public class PillController {
         try {
             List<PillLookupResponseDto> pillDtoList = pillService.findByInfo(dto);
             return ResponseEntity.ok(
-                    Map.of("status", "ok", "pill", pillDtoList) // ✅ 항상 리스트로 반환
+                    Map.of("status", "2", "pill", pillDtoList)  // ✅ status: "2"
             );
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    Map.of("status", "error", "message", "알약 정보를 찾을 수 없습니다.")
+            return ResponseEntity.ok(  // ❗ error 응답도 status = "2"
+                    Map.of("status", "0", "pill", List.of())   // 빈 리스트 반환
             );
         }
     }
+
+
 
 
     @PostMapping("/lookup")

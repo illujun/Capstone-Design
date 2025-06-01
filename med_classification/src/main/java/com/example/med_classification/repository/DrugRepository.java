@@ -12,17 +12,18 @@ import java.util.List;
 public interface DrugRepository extends JpaRepository<Drug, Integer> {
     @Query("SELECT d FROM Drug d WHERE " +
             "(:color IS NULL OR d.color = :color) AND " +
-            "(:engraved1 IS NULL OR d.printFront LIKE %:engraved1%) AND " +
-            "(:engraved2 IS NULL OR d.printBack LIKE %:engraved2%) AND " +
+            "(:print_front IS NULL OR d.printFront LIKE %:print_front%) AND " +
+            "(:print_back IS NULL OR d.printBack LIKE %:print_back%) AND " +
             "(:shape IS NULL OR d.shape = :shape) AND " +
-            "(:form IS NULL OR d.material LIKE %:form%)")
+            "(:company IS NULL OR d.company LIKE %:company%)")
     List<Drug> findByMultipleAttributes(
             @Param("color") String color,
-            @Param("engraved1") String engraved1,
-            @Param("engraved2") String engraved2,
+            @Param("print_front") String print_front,
+            @Param("print_back") String print_back,
             @Param("shape") String shape,
-            @Param("form") String form
+            @Param("company") String company
     );
+
 
     @Query("SELECT d FROM Drug d WHERE " +
             "(:printFront IS NULL OR d.printFront LIKE %:printFront%) AND " +
