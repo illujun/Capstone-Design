@@ -1,12 +1,10 @@
 package com.example.med_classification.model.dto.response;
 
 import com.example.med_classification.model.entity.Drug;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,6 +21,7 @@ public class PillLookupResponseDto {
     private String dosage;
     private String warning;
     private String image;
+    private String label;
 
     public PillLookupResponseDto(Drug drug) {
         this.idx = drug.getIdx();
@@ -39,7 +38,21 @@ public class PillLookupResponseDto {
         this.image = drug.getImage();
     }
 
-    public static PillLookupResponseDto fromEntity(Drug drug) {
-        return new PillLookupResponseDto(drug);
+    public static PillLookupResponseDto from(Drug drug, String label) {
+        return PillLookupResponseDto.builder()
+                .label(label)
+                .idx(drug.getIdx())
+                .name(drug.getName())
+                .color(drug.getColor())
+                .material(drug.getMaterial())
+                .company(drug.getCompany())
+                .shape(drug.getShape())
+                .print_front(drug.getPrintFront())
+                .print_back(drug.getPrintBack())
+                .effect(drug.getEffect())
+                .dosage(drug.getDosage())
+                .warning(drug.getWarning())
+                .image(drug.getImage())
+                .build();
     }
 }

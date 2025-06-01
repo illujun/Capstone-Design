@@ -1,5 +1,6 @@
 package com.example.med_classification.controller;
 
+import com.example.med_classification.model.dto.request.PillDetectionRequestDto;
 import com.example.med_classification.model.dto.request.PillInfoRequestDto;
 import com.example.med_classification.model.dto.request.PillLookupRequestDto;
 import com.example.med_classification.model.dto.response.PillLookupResponseDto;
@@ -20,11 +21,6 @@ public class PillController {
 
     private final PillService pillService;
 
-//    @PostMapping("/lookup")
-//    public ResponseDto<PillLookupResponseDto> lookup(@RequestBody PillLookupRequestDto dto) {
-//        PillLookupResponseDto result = pillService.findPillByDetectionResult(dto);
-//        return new ResponseDto<>(true,result);
-//    }
 
     @GetMapping("/getpill/{id}")
     public ResponseEntity<Object> getPill(@PathVariable Integer id) {
@@ -66,24 +62,10 @@ public class PillController {
 
 
     @PostMapping("/lookup")
-    public ResponseEntity<Object> lookup(@RequestBody PillLookupRequestDto dto) {
-        try {
-            List<Drug> results = pillService.findByPrintsWithFallback(dto);
-
-            String status = results.size() > 1 ? "similar" : "ok";
-
-            return ResponseEntity.ok(Map.of(
-                    "status", status,
-                    "pill", results
-            ));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    Map.of("status", "error", "message", e.getMessage())
-            );
-        }
+    public ResponseEntity<Object> lookup(@RequestBody PillDetectionRequestDto request) {
+        PillLookupResponseDto result = pillService.findBestMatch(request);
+        return ResponseEntity.ok(result);
     }
-
 
 
 

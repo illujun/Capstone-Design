@@ -1,6 +1,7 @@
 // 📁 service/PillService.java
 package com.example.med_classification.service;
 
+import com.example.med_classification.model.dto.request.PillDetectionRequestDto;
 import com.example.med_classification.model.dto.request.PillInfoRequestDto;
 import com.example.med_classification.model.dto.request.PillLookupRequestDto;
 import com.example.med_classification.model.dto.response.PillLookupResponseDto;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -55,6 +58,46 @@ public class PillService {
     }
 
     private final DrugRepository drugRepository;
+
+    public PillLookupResponseDto findBestMatch(PillDetectionRequestDto request) {
+        String front = request.getFront();
+        String back = request.getBack();
+        String label = request.getLabel();
+
+        List<Drug> allDrugs = drugRepository.findAll();
+
+        // 1. front & back 모두 일치
+        Optional<Drug> exact = allDrugs.stream()
+                .filter(d -> Objects.equals(d.getPrintFront(), front) && Objects.equals(d.getPrintBack(), back))
+                .findFirst();
+
+        if (exact.isPresent()) return PillLookupResponseDto.from(exact.get(), label);
+
+        // 2. front 또는 back 중 하나만 일치
+        Optional<Drug> partial = allDrugs.stream()
+                .filter(d -> Objects.equals(d.getPrintFront(), front) || Objects.equals(d.getPrintBack(), back))
+                .findFirst();
+
+        if (partial.isPresent()) return PillLookupResponseDto.from(partial.get(), label);
+
+        // 3. 유사도 측정 (Levenshtein distance)
+        LevenshteinDistance distance = new LevenshteinDistance();
+        Drug bestMatch = null;
+        int bestScore = Integer.MAX_VALUE;
+
+        for (Drug drug : allDrugs) {
+            int frontScore = front != null ? distance.apply(front, Optional.ofNullable(drug.getPrintFront()).orElse("")) : 100;
+            int backScore = back != null ? distance.apply(back, Optional.ofNullable(drug.getPrintBack()).orElse("")) : 100;
+            int total = frontScore + backScore;
+            if (total < bestScore) {
+                bestScore = total;
+                bestMatch = drug;
+            }
+        }
+
+        if (bestMatch == null) throw new RuntimeException("일치하는 알약을 찾을 수 없습니다.");
+        return PillLookupResponseDto.from(bestMatch, label);
+    }
 
 //    public PillLookupResponseDto findPillByDetectionResult(PillLookupRequestDto dto) {
 //        List<Drug> matches = drugRepository.findByNameContainingOrImprintFrontContaining(
