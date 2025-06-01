@@ -28,7 +28,7 @@ object NetworkModule {
     @Singleton
     @Named("findpill")
     fun provideFindpillRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("http://172.30.1.25:8080/") // 여기에 실제 API 주소
+        .baseUrl("https://8bfb-210-94-185-170.ngrok-free.app/") // 여기에 실제 API 주소
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

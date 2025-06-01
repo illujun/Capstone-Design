@@ -1,5 +1,6 @@
 package com.example.findpill.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,13 +38,17 @@ fun Result(navController: NavController){
         ?.savedStateHandle
         ?.get<String>("status")
     val viewmodel: FavoriteViewModel = hiltViewModel()
+    Log.d("ResultScreen", "${pillIds}")
     LaunchedEffect(pillIds){
         if(pillIds!=null){
+            Log.d("ResultScreen", "pillIds 수신: $pillIds")
             result = viewmodel.loadPillsByIds(pillIds)
+            Log.d("ResultScreen", "불러온 결과: $result")
         }
     }
     val whichpill = if(result.isNullOrEmpty()) dummyPillList else result
-
+    var resultisnull = false
+    if(result.isNullOrEmpty()) resultisnull=true
     Box(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.secondary)
@@ -60,9 +65,9 @@ fun Result(navController: NavController){
 
             if (status != null) {
                 val (color, message) = when (status) {
-                    "good" -> Color.Green to "알약을 잘 찾아냈습니다."
-                    "soso" -> Color.Yellow to "알약 정보가 틀릴 수 있습니다."
-                    "bad"  -> Color.Red to "대부분의 알약 정보가 틀릴 수 있습니다."
+                    "2" -> Color.Green to "알약을 잘 찾아냈습니다."
+                    "1" -> Color.Yellow to "알약 정보가 틀릴 수 있습니다."
+                    "0"  -> Color.Red to "대부분의 알약 정보가 틀릴 수 있습니다."
                     else   -> Color.Gray to "알 수 없는 상태입니다."
                 }
 
@@ -90,15 +95,28 @@ fun Result(navController: NavController){
                 }
             }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ){
-                items(whichpill) { pill ->
-                    Pill(pill = pill, onClick = {navController.navigate("detail/${pill.pill_id}")})
+            if(resultisnull){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "검색 결과가 없습니다.",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 26.sp
+                    )
+                }
+            }else{
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ){
+                    items(whichpill) { pill ->
+                        Pill(pill = pill, onClick = {navController.navigate("detail/${pill.idx}")})
+                    }
                 }
             }
-
         }
     }
 }

@@ -123,7 +123,10 @@ fun InfoSearch(navController: NavController){
                             )
 
                             viewModel.search(request){
-                                navController.currentBackStackEntry?.savedStateHandle?.set("pill_list", viewModel.result.value)
+                                val idList = viewModel.result.value.pill.map {it.idx}
+                                val status = viewModel.result.value.status
+                                navController.currentBackStackEntry?.savedStateHandle?.set("pill_ids", idList)
+                                navController.currentBackStackEntry?.savedStateHandle?.set("status", status)
                                 navController.navigate("result")
                             }
                                   },

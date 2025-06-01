@@ -44,24 +44,34 @@ fun DetailScreen(navController: NavController, pillId: String, viewModel: Calend
     val pillInfo by viewModel2.pillInfo.collectAsState()
 
     // null일 경우 예시 데이터로 대체
-    val displayData = pillInfo ?: dummyPillList.find { it.pill_id == pillId.toString() } ?: PillInfo(
-        pill_id = "0",
-        pill_name = "타이레놀",
-        description = "알약의 특징",
-        manufacturer = "동아제약",
-        main_ingredient = "아세트아미노펜, 클로르페니라민",
-        image_url = "https://example.com/images/fallback.jpg",
-        ocr_front = "D123",
-        ocr_back = ""
+    val displayData = pillInfo ?: dummyPillList.find { it.idx == pillId.toInt() } ?: PillInfo(
+        idx = 0,
+        name = "타이레놀",
+        effect = "알약의 특징",
+        company = "동아제약",
+        material = "아세트아미노펜, 클로르페니라민",
+        image = "https://example.com/images/fallback.jpg",
+        print_front = "D123",
+        print_back = "",
+        color = "하양",
+        dosage = "1일 1회 식후 섭취",
+        shape = "장방형",
+        warning = "음주 금지",
+
     )
 
     val pillDetail = listOf(
-        "약 이름" to displayData.pill_name,
-        "제약회사" to displayData.manufacturer,
-        "성분" to displayData.main_ingredient,
-        "각인 앞면" to displayData.ocr_front,
-        "각인 뒷면" to displayData.ocr_back,
-        "설명" to displayData.description
+        "약 이름" to displayData.name,
+        "제약회사" to displayData.company,
+        "성분" to displayData.material,
+        "각인 앞면" to displayData.print_front,
+        "각인 뒷면" to displayData.print_back,
+        "효과" to displayData.effect,
+        "색상" to displayData.color,
+        "용법" to displayData.dosage,
+        "모양" to displayData.shape,
+        "주의 사항" to displayData.warning,
+
     )
 
     val morning by viewModel.morning.collectAsState(initial = emptySet())
@@ -93,7 +103,7 @@ fun DetailScreen(navController: NavController, pillId: String, viewModel: Calend
                 item {
                     Image(
                         painter = rememberAsyncImagePainter(
-                            model = displayData.image_url,
+                            model = displayData.image,
                             placeholder = painterResource(R.drawable.pill1),
                             error = painterResource(R.drawable.pill1)
                         ),

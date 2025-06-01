@@ -34,7 +34,7 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
         ) {
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = pill.image_url,
+                    model = pill.image,
                     error = painterResource(R.drawable.pill1),
                     placeholder = painterResource(id = R.drawable.pill2)
                 ),
@@ -45,13 +45,13 @@ fun Pill(pill: PillInfo, onClick: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = pill.pill_name?.ifBlank { "이름 없음" } ?: "이름 없음",
+                    text = pill.name?.ifBlank { "이름 없음" } ?: "이름 없음",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = pill.description?.ifBlank { "설명 없음" } ?: "설명 없음",
+                    text = pill.effect?.ifBlank { "설명 없음" } ?: "설명 없음",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -115,33 +115,45 @@ val dummyPillList = listOf(
 
 val dummyPillList = listOf(
     PillInfo(
-        pill_id = "D321",
-        pill_name = "타이레놀 정 500mg",
-        description = "진통 및 해열에 사용되는 약물입니다.",
-        manufacturer = "한국얀센",
-        main_ingredient = "아세트아미노펜",
-        image_url = "https://example.com/images/tylenol.jpg",
-        ocr_front = "TYLENOL",
-        ocr_back = ""
+        image = "https://example.com/images/tylenol.jpg",
+        idx = 321,
+        name = "타이레놀 정 500mg",
+        color = "하양", // 예시 색상
+        material = "아세트아미노펜",
+        company = "한국얀센",
+        shape = "원형", // 예시 형태
+        print_front = "TYLENOL",
+        print_back = "",
+        warning = "과다 복용 주의",
+        effect = "진통, 해열",
+        dosage = "1회 1정, 1일 3~4회"
     ),
     PillInfo(
-        pill_id = "D322",
-        pill_name = "세로나민 캡슐",
-        description = "우울증 치료에 사용되는 약물입니다.",
-        manufacturer = "한미약품",
-        main_ingredient = "플루옥세틴",
-        image_url = "https://example.com/images/seronamin.jpg",
-        ocr_front = "SRN",
-        ocr_back = ""
+        image = "https://example.com/images/seronamin.jpg",
+        idx = 322,
+        name = "세로나민 캡슐",
+        color = "파랑", // 예시 색상
+        material = "플루옥세틴",
+        company = "한미약품",
+        shape = "캡슐형", // 예시 형태
+        print_front = "SRN",
+        print_back = "",
+        warning = "졸음 유발 가능",
+        effect = "우울증 치료",
+        dosage = "1일 1회, 1정"
     ),
     PillInfo(
-        pill_id = "D323",
-        pill_name = "이부프로펜 정 200mg",
-        description = "염증 완화 및 해열 작용이 있는 약물입니다.",
-        manufacturer = "대웅제약",
-        main_ingredient = "이부프로펜",
-        image_url = "https://example.com/images/ibu.jpg",
-        ocr_front = "IBU",
-        ocr_back = ""
+        image = "https://example.com/images/ibu.jpg",
+        idx = 323,
+        name = "이부프로펜 정 200mg",
+        color = "분홍", // 예시 색상
+        material = "이부프로펜",
+        company = "대웅제약",
+        shape = "타원형", // 예시 형태
+        print_front = "IBU",
+        print_back = "",
+        warning = "위장 장애 주의",
+        effect = "염증 완화, 해열",
+        dosage = "1회 1~2정, 필요시 복용"
     )
 )

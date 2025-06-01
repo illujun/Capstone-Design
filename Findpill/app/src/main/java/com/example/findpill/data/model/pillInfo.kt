@@ -1,11 +1,9 @@
 package com.example.findpill.data.model
 
-/*
 data class PillInfo(
-    val image: Int,
-    val id: Int,
+    val image: String,
+    val idx: Int,
     val name: String,
-    val description: String,
     val color: String,
     val material: String,
     val company: String,
@@ -14,10 +12,9 @@ data class PillInfo(
     val print_back: String,
     val warning: String,
     val effect: String,
-    val method: String,
-    val usage: String,
+    val dosage: String,
 )
-*/
+/*
 
 data class PillInfo(
     val pill_id: String,
@@ -29,6 +26,9 @@ data class PillInfo(
     val ocr_front: String,
     val ocr_back: String
 )
+
+
+ */
 
 data class PillSearchResponse(
     val status: String,

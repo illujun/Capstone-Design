@@ -1,6 +1,7 @@
 package com.example.findpill.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -51,7 +52,7 @@ class FavoriteViewModel @Inject constructor(
                                 if (pill == null) {
                                     android.util.Log.w("FavoriteViewModel", "⚠️ ID $id 에 대한 응답이 null임")
                                 } else {
-                                    android.util.Log.d("FavoriteViewModel", "✅ ID $id 에 대한 알약 정보 수신 완료: ${pill.pill_name}")
+                                    android.util.Log.d("FavoriteViewModel", "✅ ID $id 에 대한 알약 정보 수신 완료: ${pill.name}")
                                 }
                                 pill
                             } catch (e: Exception) {
@@ -72,7 +73,9 @@ class FavoriteViewModel @Inject constructor(
         ids.map { id ->
             async {
                 try {
+                    Log.d("FavoriteViewModel", "$id 에 대해 요청 시도")
                     val pill = getPillById.getPillById(id.toString())
+                    Log.d("FavoriteViewModel", "ID $id 결과: $pill")
                     pill
                 } catch (e: Exception) {
                     android.util.Log.e("FavoriteViewModel", "ID $id 조회 실패", e)

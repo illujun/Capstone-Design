@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findpill.data.model.InfoSearchRequest
 import com.example.findpill.data.model.PillInfo
+import com.example.findpill.data.model.PillSearchResponse
 import com.example.findpill.data.repository.InfoSearchRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +18,8 @@ import javax.inject.Inject
 class InfoSearchViewModel @Inject constructor(
     private val repository: InfoSearchRepo
 ) : ViewModel() {
-    private val _result = MutableStateFlow<List<PillInfo>>(emptyList())
-    val result: StateFlow<List<PillInfo>> = _result
+    private val _result = MutableStateFlow(PillSearchResponse(status="INIT", pill = emptyList()))
+    val result: StateFlow<PillSearchResponse> = _result
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
@@ -36,7 +38,7 @@ class InfoSearchViewModel @Inject constructor(
                 val response = repository.pillInfoSearch(request)
 
                 if (response != null) {
-                    _result.value = response.pill
+                    _result.value = response
                     Log.d("InfoSearchViewModel", "검색 성공: ${response.pill.size}개")
                     onSuccess()
                 } else {
