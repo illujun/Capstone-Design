@@ -41,7 +41,7 @@ fun Loading(navController: NavController){
                 delay(500L)
                 if(result!=null){
                     showSuccess = true
-                    val idList = result.pill.map {it.idx}
+                    val idList = result.pill.filter{it.name.isNotBlank() && it.company.isNotBlank() && it.idx !=0 }.sortedBy{it.label?.toIntOrNull()}.map{it.idx}
                     val status = result.status
 
                     navController.currentBackStackEntry?.savedStateHandle?.apply{

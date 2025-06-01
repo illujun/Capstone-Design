@@ -1,5 +1,7 @@
 package com.example.findpill.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class PillInfo(
     val image: String,
     val idx: Int,
@@ -13,6 +15,7 @@ data class PillInfo(
     val warning: String,
     val effect: String,
     val dosage: String,
+    val label: String? = null
 )
 /*
 
@@ -32,5 +35,7 @@ data class PillInfo(
 
 data class PillSearchResponse(
     val status: String,
+
+    @SerializedName(value = "pill", alternate = ["results"])
     val pill: List<PillInfo>
 )
