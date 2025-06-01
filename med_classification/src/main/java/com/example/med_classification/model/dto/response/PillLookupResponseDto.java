@@ -1,6 +1,7 @@
 package com.example.med_classification.model.dto.response;
 
 import com.example.med_classification.model.entity.Drug;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter

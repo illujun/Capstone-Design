@@ -24,6 +24,9 @@ public interface DrugRepository extends JpaRepository<Drug, Integer> {
             @Param("company") String company
     );
 
+    @Query("SELECT d FROM Drug d WHERE d.color = :color AND d.shape = :shape")
+    List<Drug> findByColorAndShape(@Param("color") String color, @Param("shape") String shape);
+
 
     @Query("SELECT d FROM Drug d WHERE " +
             "(:printFront IS NULL OR d.printFront LIKE %:printFront%) AND " +
