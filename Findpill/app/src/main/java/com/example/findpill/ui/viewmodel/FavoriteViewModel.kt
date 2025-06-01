@@ -68,6 +68,20 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    suspend fun loadPillsByIds(ids: List<Int>): List<PillInfo> = coroutineScope {
+        ids.map { id ->
+            async {
+                try {
+                    val pill = getPillById.getPillById(id.toString())
+                    pill
+                } catch (e: Exception) {
+                    android.util.Log.e("FavoriteViewModel", "ID $id 조회 실패", e)
+                    null
+                }
+            }
+        }.awaitAll().filterNotNull()
+    }
+
 
     fun addFavorite(id: String) = viewModelScope.launch{
         dataStore.edit { prefs ->

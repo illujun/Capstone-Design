@@ -59,7 +59,7 @@ fun PhotoSearch(navController: NavController){
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.5f)
-                        .background(MaterialTheme.colorScheme.onPrimary),
+                        .background(MaterialTheme.colorScheme.secondary),
                     contentAlignment = Alignment.Center
                 ){
                     Image(

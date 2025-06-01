@@ -1,5 +1,6 @@
 package com.example.findpill.data.api
 
+import com.example.findpill.data.model.PillSearchResponse
 import com.example.findpill.data.model.UploadResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -14,5 +15,5 @@ interface ImageApi{
     suspend fun uploadImage(
         @Part front: MultipartBody.Part,
         @Part back: MultipartBody.Part
-    ): Response<ResponseBody>
+    ): Response<PillSearchResponse>
 }

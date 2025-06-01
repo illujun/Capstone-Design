@@ -39,12 +39,14 @@ fun Loading(navController: NavController){
             try{
                 val result = uploadR.upload(pill1, pill2)
                 delay(500L)
-                if(result==true){
+                if(result!=null){
                     showSuccess = true
+                    val idList = result.pill.map {it.pill_id}
+                    val status = result.status
 
                     navController.currentBackStackEntry?.savedStateHandle?.apply{
-                        // 이 부분은 json body 구성 요소에 따라 유동적으로 조정
-                        // set("pill_id", result.pill_id) 등
+                        set("pill_ids", idList)
+                        set("status", status)
                     }
                 }else{
                     showFailure = true

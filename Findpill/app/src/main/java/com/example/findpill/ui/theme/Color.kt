@@ -2,14 +2,14 @@ package com.example.findpill.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val backgroundColor = Color(0xFF6B4E90)
-val buttonColor = Color(0xFF000F4C)
+val backgroundColor = Color(0xFFDBE2EF)
+val buttonColor = Color(0xFF112D4E)
 val buttontextColor = Color(0xFFffffff)
-val bannerColor = Color(0xFFEDEDED)
-val bannerBoxColor = Color(0xFFC4C4C4)
+val bannerColor = Color(0xFFF9F7F7)
+val bannerBoxColor = Color(0xFF7FA1C3)
 val bannerBoxBottomColor = Color(0xFFFFFFFF)
 val secondBackgroundColor = Color(0xFFF0F0F0)
-val highlightboxColor = Color(0x88F8C9C9)
+val highlightboxColor = Color(0xA1FF5E5E)
 val textColor = Color(0xFF000000)
 
 
