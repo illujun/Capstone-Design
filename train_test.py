@@ -5,10 +5,10 @@ def main():
 
     model.train(
         data='pill.yaml',
-        epochs=400,
+        epochs=200,
         batch=16,
         imgsz=640,
-        workers=0,
+        workers=2,
         device='0',
         save=True
     )

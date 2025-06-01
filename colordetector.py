@@ -1,27 +1,26 @@
 import os
-import json
 
-root_dir = r"C:\Users\tkdwn\Downloads\166.약품식별 인공지능 개발을 위한 경구약제 이미지 데이터\01.데이터\2.Validation\라벨링데이터"
+# 검증 이미지와 라벨 디렉토리 경로
+val_img_dir = r"C:\Users\HRILAB\PycharmProjects\yolomodel\Capstone-Design\images_new\val"
+val_label_dir = r"C:\Users\HRILAB\PycharmProjects\yolomodel\Capstone-Design\labels\val"
 
-color_set = set()
 
-for subdir, dirs, files in os.walk(root_dir):
-    for file in files:
-        if file.endswith(".json"):
-            json_path = os.path.join(subdir, file)
-            try:
-                with open(json_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                for item in data.get("images", []):
-                    for color_field in ["dl_custom_shape"]:
-                        colors = item.get(color_field, "")
-                        if colors:
-                            split_colors = [c.strip() for c in colors.replace(";", ",").split(",") if c.strip()]
-                            for c in split_colors:
-                                color_set.add(c)
-            except Exception as e:
-                print(f"Error reading {json_path}: {e}")
+# 빈 라벨 파일 삭제
+def remove_empty_labels(img_dir, label_dir):
+    for label_file in os.listdir(label_dir):
+        label_path = os.path.join(label_dir, label_file)
 
-color_list = sorted(color_set)
-print(f"총 {len(color_list)}개의 색깔을 찾았어요:")
-print(color_list)
+        # 라벨 파일이 텍스트 파일이고 비어 있는지 확인
+        if os.path.isfile(label_path):
+            with open(label_path, 'r') as f:
+                if f.read().strip() == '':  # 빈 파일이면 삭제
+                    print(f"Empty label found: {label_file}. Deleting...")
+                    # 해당 이미지와 라벨 파일 삭제
+                    img_file = label_file.replace('.txt', '.jpg')  # 이미지 확장자에 맞게 변경
+                    img_path = os.path.join(img_dir, img_file)
+                    os.remove(label_path)
+                    os.remove(img_path)
+                    print(f"Deleted {img_file} and {label_file}")
+
+
+remove_empty_labels(val_img_dir, val_label_dir)
