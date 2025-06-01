@@ -1,19 +1,23 @@
 import requests
 
-url = "http://210.217.79.69:1321/upload"  # 서버 주소
-front_image_path = "test_images/6.jpg"
-back_image_path = "test_images/7.jpg"  # 더미 파일 필요
+url = "http://beatmania.app:8000/upload"  # 서버 주소
+front_image_path = "test_images/3.jpg"
+back_image_path = "test_images/3.jpg"  # 더미 파일
 
 with open(front_image_path, 'rb') as front_file, open(back_image_path, 'rb') as back_file:
     files = {
         'front': ('6.jpg', front_file, 'image/jpeg'),
-        'back': ('blank.jpg', back_file, 'image/jpeg')  # FastAPI에 요구되므로 더미라도 필요
+        'back': ('blank.jpg', back_file, 'image/jpeg')
     }
     response = requests.post(url, files=files)
 
     if response.status_code == 200:
-        with open("result_front_nobg.png", "wb") as f:
-            f.write(response.content)
-        print("✅ 이미지 저장 완료: result_front_nobg.png")
+        try:
+            json_data = response.json()
+            import json
+            print("✅ JSON 응답:")
+            print(json.dumps(json_data, ensure_ascii=False, indent=2))
+        except ValueError:
+            print("❌ 응답이 JSON 형식이 아닙니다.")
     else:
-        print(f"❌ 오류 발생: {response.status_code}")
+        print(f"❌ 오류 발생: HTTP {response.status_code}")
