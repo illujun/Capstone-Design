@@ -26,6 +26,19 @@ public interface DrugRepository extends JpaRepository<Drug, String> {
             @Param("form") String form
     );
 
+    @Query("SELECT d FROM Drug d WHERE " +
+            "(:printFront IS NULL OR d.printFront LIKE %:printFront%) AND " +
+            "(:printBack IS NULL OR d.printBack LIKE %:printBack%) AND " +
+            "(:color IS NULL OR d.color = :color) AND " +
+            "(:shape IS NULL OR d.shape = :shape)")
+    List<Drug> findByDetection(
+            @Param("printFront") String printFront,
+            @Param("printBack") String printBack,
+            @Param("color") String color,
+            @Param("shape") String shape
+    );
+
+
 //    List<Drug> findByNameContainingOrImprintFrontContaining(String name, String imprintFront);
 //
 //    @Query("SELECT d FROM Drug d " +

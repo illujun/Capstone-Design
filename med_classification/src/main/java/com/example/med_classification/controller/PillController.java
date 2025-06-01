@@ -4,6 +4,7 @@ import com.example.med_classification.model.dto.request.PillInfoRequestDto;
 import com.example.med_classification.model.dto.request.PillLookupRequestDto;
 import com.example.med_classification.model.dto.response.PillLookupResponseDto;
 import com.example.med_classification.model.dto.response.ResponseDto;
+import com.example.med_classification.model.entity.Drug;
 import com.example.med_classification.service.PillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,21 @@ public class PillController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     Map.of("status", "error", "message", "알약 정보를 찾을 수 없습니다.")
+            );
+        }
+    }
+
+    @PostMapping("/lookup")
+    public ResponseEntity<Object> lookup(@RequestBody PillLookupRequestDto dto) {
+        try {
+            List<Drug> drugs = pillService.findPillByDetection(dto);
+            return ResponseEntity.ok(Map.of(
+                    "status", "ok",
+                    "pill", drugs
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    Map.of("status", "error", "message", e.getMessage())
             );
         }
     }

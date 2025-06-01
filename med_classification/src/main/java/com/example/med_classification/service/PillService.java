@@ -30,6 +30,20 @@ public class PillService {
 //
 //        return new PillLookupResponseDto(matches.get(0));
 //    }
+public List<Drug> findPillByDetection(PillLookupRequestDto dto) {
+    List<Drug> drugs = drugRepository.findByDetection(
+            dto.getPrintFront(),
+            dto.getPrintBack(),
+            dto.getColor(),
+            dto.getShape()
+    );
+
+    if (drugs.isEmpty()) {
+        throw new RuntimeException("일치하는 약을 찾을 수 없습니다.");
+    }
+
+    return drugs;
+}
 
     public PillLookupResponseDto findById(String id) {
         Drug drug = drugRepository.findById(id)
@@ -61,7 +75,7 @@ public class PillService {
 
         // Drug → PillLookupResponseDto 변환
         return results.stream()
-                .map(PillLookupResponseDto::fromEntity) // 정적 팩토리 메서드 필요
+                .map(PillLookupResponseDto::new) // 정적 팩토리 메서드 필요
                 .collect(Collectors.toList());
     }
 

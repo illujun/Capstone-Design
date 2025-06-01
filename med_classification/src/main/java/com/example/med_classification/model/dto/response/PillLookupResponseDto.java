@@ -31,16 +31,16 @@ public class PillLookupResponseDto {
         this.ocr_back = drug.getPrintBack();
     }
 
-    public static PillLookupResponseDto fromEntity(Drug drug) {
-        PillLookupResponseDto dto = new PillLookupResponseDto();
-        dto.pill_id = drug.getIdx();
-        dto.pill_name = drug.getName();
-        dto.description = drug.getPurpose();
-        dto.manufacturer = drug.getCompany();
-        dto.main_ingredient = drug.getMaterial();
-        dto.image_url = drug.getImage();
-        dto.ocr_front = drug.getPrintFront();
-        dto.ocr_back = drug.getPrintBack();
-        return dto;
-    }
+//    public static PillLookupResponseDto fromEntity(Drug drug) {
+//        PillLookupResponseDto dto = new PillLookupResponseDto();
+//        dto.pill_id = drug.getIdx();
+//        dto.pill_name = drug.getName();
+//        dto.description = drug.getPurpose();
+//        dto.manufacturer = drug.getCompany();
+//        dto.main_ingredient = drug.getMaterial();
+//        dto.image_url = drug.getImage();
+//        dto.ocr_front = drug.getPrintFront();
+//        dto.ocr_back = drug.getPrintBack();
+//        return dto;
+//    }
 }

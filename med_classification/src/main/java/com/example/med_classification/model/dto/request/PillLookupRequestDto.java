@@ -9,4 +9,7 @@ public class PillLookupRequestDto {
     private String detectedText;
     private String shape;
     private String color;
+
+    private String printFront;
+    private String printBack;
 }
