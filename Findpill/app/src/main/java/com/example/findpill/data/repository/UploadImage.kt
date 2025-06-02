@@ -5,16 +5,25 @@ import android.util.Log
 import com.example.findpill.data.api.ImageApi
 import com.example.findpill.data.model.PillSearchResponse
 import com.example.findpill.ui.utils.ChangeImagePath
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class UploadImage(private val context: Context){
+    private val okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(40, TimeUnit.SECONDS)
+        .writeTimeout(15, TimeUnit.SECONDS)
+        .build()
+
     private val retrofit = Retrofit.Builder()
         .baseUrl("http://beatmania.app:1321/") // 서버 연결
         //.baseUrl("http://210.217.79.69:1321/")
         .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
         .build()
 
     private val api = retrofit.create(ImageApi::class.java)
