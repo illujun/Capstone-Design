@@ -39,19 +39,17 @@ fun Loading(navController: NavController){
             try{
                 val result = uploadR.upload(pill1, pill2)
                 delay(500L)
-                if(result!=null){
-                    showSuccess = true
-                    val idList = result.pill.filter{it.name.isNotBlank() && it.company.isNotBlank() && it.idx !=0 }.sortedBy{it.label?.toIntOrNull()}.map{it.idx}
-                    val status = result.status
+                showSuccess = true
+                val idList = result?.pill
+                    ?.filterNotNull()
+                    ?.filter{it.name.isNotBlank() && it.company.isNotBlank() && it.idx !=0 }?.sortedBy{it.label?.toIntOrNull()}?.map{it.idx}
+                val status = result?.status
 
-                    navController.currentBackStackEntry?.savedStateHandle?.apply{
-                        set("pill_ids", idList)
-                        set("status", status)
-                    }
-                }else{
-                    showFailure = true
-                    Log.d("UploadImage", "response가 NULL임")
+                navController.currentBackStackEntry?.savedStateHandle?.apply{
+                    set("pill_ids", idList)
+                    set("status", status)
                 }
+
             }catch(e:Exception){
                 showFailure = true
                 Log.d("UploadImage", "try 블럭 오류 발생")

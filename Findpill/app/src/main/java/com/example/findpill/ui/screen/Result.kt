@@ -38,7 +38,7 @@ fun Result(navController: NavController){
         ?.savedStateHandle
         ?.get<String>("status")
     val viewmodel: FavoriteViewModel = hiltViewModel()
-    Log.d("ResultScreen", "${pillIds}")
+    Log.d("ResultScreen", "${pillIds} , ${status}")
     LaunchedEffect(pillIds){
         if(pillIds!=null){
             Log.d("ResultScreen", "pillIds 수신: $pillIds")
@@ -57,7 +57,7 @@ fun Result(navController: NavController){
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            TopBar(title = "${pillIds?.size}개의 검색 결과", onBackClick = {
+            TopBar(title = "${if(pillIds.isNullOrEmpty()) 0 else pillIds.size}개의 검색 결과", onBackClick = {
                 navController.popBackStack()
                 navController.navigate("photosearch"){
 
@@ -67,7 +67,7 @@ fun Result(navController: NavController){
                 val (color, message) = when (status) {
                     "2" -> Color.Green to "알약을 잘 찾아냈습니다."
                     "1" -> Color.Yellow to "알약 정보가 틀릴 수 있습니다."
-                    "0"  -> Color.Red to "대부분의 알약 정보가 틀릴 수 있습니다."
+                    "0"  -> Color.Red to "알약 정보가 없습니다."
                     else   -> Color.Gray to "알 수 없는 상태입니다."
                 }
 

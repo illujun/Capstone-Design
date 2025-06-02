@@ -37,5 +37,5 @@ data class PillSearchResponse(
     val status: String,
 
     @SerializedName(value = "pill", alternate = ["results"])
-    val pill: List<PillInfo>
+    val pill: List<PillInfo?> = emptyList()
 )

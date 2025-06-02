@@ -20,7 +20,7 @@ object NetworkModule {
     @Singleton
     @Named("beatmania")
     fun provideBeatmaniaRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("http://beatmania.app:1321/") // 여기에 실제 API 주소
+        .baseUrl("http://beatmania.app:8000/") // 여기에 실제 API 주소
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -28,7 +28,7 @@ object NetworkModule {
     @Singleton
     @Named("findpill")
     fun provideFindpillRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://8bfb-210-94-185-170.ngrok-free.app/") // 여기에 실제 API 주소
+        .baseUrl("http://beatmania.app:9998/") // 여기에 실제 API 주소
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

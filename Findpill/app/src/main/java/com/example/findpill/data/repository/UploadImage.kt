@@ -20,7 +20,7 @@ class UploadImage(private val context: Context){
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://beatmania.app:1321/") // 서버 연결
+        .baseUrl("http://beatmania.app:8000/") // 서버 연결
         //.baseUrl("http://210.217.79.69:1321/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
