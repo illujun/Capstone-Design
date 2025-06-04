@@ -10,10 +10,7 @@ import com.example.med_classification.repository.DrugRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -29,10 +26,10 @@ public class PillService {
         String label = request.getLabel();
         String clazz = request.getClazz();
 
-        // 1. class 분리 → color, shape
         if (clazz == null || !clazz.contains("_")) {
             throw new RuntimeException("형식이 잘못된 class입니다.");
         }
+
         String[] parts = clazz.split("_");
         String color = parts[0];
         String shape = parts[1];
@@ -40,60 +37,80 @@ public class PillService {
         String front = request.getFront();
         String back = request.getBack();
 
-        // 2. color + shape 일치하는 약 리스트
-        List<Drug> filtered = drugRepository.findByColorAndShape(color, shape);
-
-        List<Drug> searchTarget;
-
-        if (!filtered.isEmpty()) {
-            // 필터링된 약에서 먼저 찾기
-            searchTarget = filtered;
-        } else {
-            // color+shape 일치 약 없으면 전체에서 찾기
-            searchTarget = drugRepository.findAll();
-        }
-
-        // 3. front + back 모두 일치
-        for (Drug drug : searchTarget) {
-            boolean frontMatch = front != null && front.equals(drug.getPrintFront());
-            boolean backMatch = back != null && back.equals(drug.getPrintBack());
-
-            if (frontMatch || backMatch) {
-                return PillLookupResponseDto.from(drug, label);
-            }
-        }
-
-
-        // 4. 둘 중 하나 일치
-        for (Drug drug : searchTarget) {
-            if (Objects.equals(drug.getPrintFront(), front) ||
-                    Objects.equals(drug.getPrintBack(), back)) {
-                return PillLookupResponseDto.from(drug, label);
-            }
-        }
-
-        // 5. 유사도 기반
         LevenshteinDistance distance = new LevenshteinDistance();
-        Drug bestMatch = null;
+
+        List<Drug> allDrugs = drugRepository.findAll();
+
+        // 1. color + shape + front + back 정확 일치
+        for (Drug drug : allDrugs) {
+            if (color.equals(drug.getColor()) &&
+                    shape.equals(drug.getShape()) &&
+                    front.equals(drug.getPrintFront()) &&
+                    (back == null || back.equals(drug.getPrintBack()))) {
+                return PillLookupResponseDto.from(drug, label);
+            }
+        }
+
+        // 2. 편집거리 계산 및 후보 수집
+        List<Drug> candidatesWithinDistance = new ArrayList<>();
+        Drug closestDrug = null;
         int bestScore = Integer.MAX_VALUE;
 
-        for (Drug drug : searchTarget) {
+        for (Drug drug : allDrugs) {
             int frontScore = front != null ? distance.apply(front, Optional.ofNullable(drug.getPrintFront()).orElse("")) : 100;
-            int backScore = back != null ? distance.apply(back, Optional.ofNullable(drug.getPrintBack()).orElse("")) : 100;
-            int total = frontScore + backScore;
+            int backScore = 0;
 
-            if (total < bestScore) {
-                bestScore = total;
-                bestMatch = drug;
+            // back이 null이 아닐 경우에만 비교
+            if (back != null) {
+                backScore = distance.apply(back, Optional.ofNullable(drug.getPrintBack()).orElse(""));
+            }
+
+            int totalScore = frontScore + (back != null ? backScore : 0);
+
+            if (totalScore < bestScore) {
+                bestScore = totalScore;
+                closestDrug = drug;
+            }
+
+            // frontScore와 backScore 모두 유효할 경우만 후보로 추가
+            if (frontScore <= 3 && (back == null || backScore <= 3)) {
+                candidatesWithinDistance.add(drug);
             }
         }
 
-        if (bestMatch == null) {
-            throw new RuntimeException("유사한 알약을 찾을 수 없습니다.");
+        // 3. 편집거리 완벽 일치 (front, back 모두)
+        for (Drug drug : candidatesWithinDistance) {
+            int f = distance.apply(front, Optional.ofNullable(drug.getPrintFront()).orElse(""));
+            int b = (back != null) ? distance.apply(back, Optional.ofNullable(drug.getPrintBack()).orElse("")) : 0;
+            if (f == 0 && (back == null || b == 0)) {
+                return PillLookupResponseDto.from(drug, label);
+            }
         }
 
-        return PillLookupResponseDto.from(bestMatch, label);
+        // 4. front or back 중 하나만 완벽 일치
+        for (Drug drug : candidatesWithinDistance) {
+            int f = distance.apply(front, Optional.ofNullable(drug.getPrintFront()).orElse(""));
+            int b = (back != null) ? distance.apply(back, Optional.ofNullable(drug.getPrintBack()).orElse("")) : 100;
+            if (f == 0 || b == 0) {
+                return PillLookupResponseDto.from(drug, label);
+            }
+        }
+
+        // 5. 편집거리 후보 중 color + shape 일치
+        for (Drug drug : candidatesWithinDistance) {
+            if (color.equals(drug.getColor()) && shape.equals(drug.getShape())) {
+                return PillLookupResponseDto.from(drug, label);
+            }
+        }
+
+        // 6. 그래도 없으면 가장 가까운 후보 반환
+        if (closestDrug != null) {
+            return PillLookupResponseDto.from(closestDrug, label);
+        }
+
+        throw new RuntimeException("유사한 알약을 찾을 수 없습니다.");
     }
+
 
 
 
@@ -126,6 +143,7 @@ public class PillService {
         }
 
         return results.stream()
+                .limit(10)
                 .map(PillLookupResponseDto::new)
                 .collect(Collectors.toList());
     }
