@@ -1,6 +1,13 @@
 # Pill Recognition System (작성자 및 통합 시스템 구축 : 서준원)
 
 ## 구성 개요
+### Branch 설명
+- 각 모듈 별 소스 코드(학습 세팅)은 branch로 분리되어 있습니다.
+- [main](http://github.com/illujun/Capstone-Design) branch에서는 실행 가능한 환경을 제공합니다.
+- [back_end](https://github.com/illujun/Capstone-Design/tree/back_end) branch에서는 Spring Boot 백엔드 서버의 소스 코드를 제공합니다.
+- [front_end](https://github.com/illujun/Capstone-Design/tree/front_end) branch에서는 Android용으로 개발된 API 사용 어플리케이션 예제의 소스 코드를 제공합니다.
+- [model_workspace](https://github.com/illujun/Capstone-Design/tree/model_workspace) branch에서는 YOLO 및 배경 제거 모듈의 학습 관련 소스 코드를 제공합니다.
+- [Coldlapse/pill-bg-remover](https://github.com/Coldlapse/pill-bg-remover) 에서는 특별히 배경 제거 모듈만 다룹니다.
 
 ### 1. Pill_server (Spring Boot 기반 백엔드)
 - 알약 데이터베이스 조회 및 클래스 기반 가중치 적용 알고리즘을 처리하는 Spring 백엔드입니다.
