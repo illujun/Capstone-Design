@@ -115,10 +115,10 @@ fun InfoSearch(navController: NavController){
                         onClick = {
                             val request = InfoSearchRequest(
                                 color = if (Color == "전체") null else Color,
-                                engraved1 = print1.takeIf { it.isNotBlank() },
-                                engraved2 = print2.takeIf { it.isNotBlank() },
+                                print_front = print1.takeIf { it.isNotBlank() },
+                                print_back = print2.takeIf { it.isNotBlank() },
                                 shape = if (Shape == "전체") null else Shape,
-                                divided = if (Divided == "전체") null else Divided,
+                                //divided = if (Divided == "전체") null else Divided,
                                 //form = if (Form == "전체") null else Form
                             )
 
