@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -127,7 +128,7 @@ fun DetailScreen(navController: NavController, pillId: String, viewModel: Calend
 
                 items(pillDetail) { (title, value) ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(vertical=4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -143,7 +144,9 @@ fun DetailScreen(navController: NavController, pillId: String, viewModel: Calend
                         Text(
                             text = value?.ifBlank { "정보 없음" } ?: "정보 없음",
                             color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.End
                         )
                     }
                 }
